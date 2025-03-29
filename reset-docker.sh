@@ -1,20 +1,26 @@
 #!/bin/bash
 
-# Detener todos los contenedores
-sudo docker-compose down -v
+# Detener y eliminar contenedores
+docker-compose down -v
 
-# Eliminar todos los contenedores e imágenes
-sudo docker system prune -af --volumes
+# Limpiar sistema Docker
+docker system prune -af
 
-# Eliminar archivos de red
-sudo rm -rf /var/lib/docker/network/files/
+# Eliminar imágenes
+docker rmi $(docker images -q) -f
+
+# Eliminar volúmenes
+docker volume prune -f
+
+# Eliminar redes
+docker network prune -f
 
 # Reiniciar Docker
 sudo systemctl restart docker
 
 # Esperar a que Docker esté listo
-sleep 5
+sleep 10
 
 # Reconstruir y levantar
-sudo docker-compose build --no-cache
-sudo docker-compose up -d 
+docker-compose build --no-cache
+docker-compose up -d 
