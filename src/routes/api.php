@@ -2,12 +2,15 @@
 
 use GuzzleHttp\Promise\Is;
 use Illuminate\Http\Request;
-use App\Http\Middleware\IsUserAuth;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\GenerateDocumentController;
+
 use App\Http\Middleware\IsAdmin;
-use App\Models\Product;
+use App\Http\Middleware\IsUserAuth;
+
 
 // PUBLIC ROUTES
 Route::post('login', [AuthController::class, 'login']);
@@ -20,6 +23,12 @@ Route::middleware([IsUserAuth::class])->group(function () {
     });
 
     Route::get('products', [ProductController::class, 'getProducts']);
+
+    Route::get('generate-dni', [GenerateDocumentController::class, 'generateDni']);
+    Route::get('generate-cif', [GenerateDocumentController::class, 'generateCif']);
+    Route::get('generate-nie', [GenerateDocumentController::class, 'generateNie']);
+    Route::get('generate-nif', [GenerateDocumentController::class, 'generateNif']);
+    Route::get('generate-ssn', [GenerateDocumentController::class, 'generateSsn']);
 });
 
 

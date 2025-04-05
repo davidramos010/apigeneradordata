@@ -42,10 +42,14 @@ class AuthController extends Controller
     }
 
     /**
-     * Undocumented function
+     * Login a user.
      *
-     * @param Request $request
-     * @return void
+     * @bodyParam email string required The email of the user. Example: user@example.com
+     * @bodyParam password string required The password of the user. Example: secret
+     *
+     * @response 200 {
+     *   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+     * }
      */
     public function login(Request $request)
     {
@@ -85,7 +89,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Undocumented function
+     * finalice session
      *
      * @param Request $request
      * @return void
@@ -103,7 +107,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Undocumented function
+     * get all information of the user
      *
      * @return void
      */
