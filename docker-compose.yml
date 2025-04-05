@@ -18,6 +18,7 @@ services:
   app:
     image: 'bitnami/laravel:11' # Updated to Laravel version 11
     container_name: laravel
+    user: "${UID}:${GID}" # Use host's UID and GID
     ports:
       - '8000:8000'
     environment:
