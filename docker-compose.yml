@@ -13,12 +13,12 @@ services:
     networks:
       - laravel_network
     ports:
-      - "3308:3306"
+      - "3309:3306"
 
   app:
     image: 'bitnami/laravel:11' # Updated to Laravel version 11
     container_name: laravel
-    user: "${UID}:${GID}" # Use host's UID and GID
+    user: "${MY_UID}:${MY_GID}" # Use host's UID and GID
     ports:
       - '8000:8000'
     environment:
@@ -27,14 +27,25 @@ services:
       - DB_DATABASE=laravel_db # Matches the database name in the MySQL service
       - DB_USERNAME=laravel     # Matches the username in the MySQL service
       - DB_PASSWORD=secret      # Matches the password in the MySQL service
-      - BITNAMI_APP_USER=1000
-      - BITNAMI_APP_GROUP=1000
+      - LARAVEL_SKIP_PROJECT_CREATION=true
+      - BITNAMI_APP_USER=${MY_UID}
+      - BITNAMI_APP_GROUP=${MY_GID}
     volumes:
       - ./src:/app
     networks:
       - laravel_network
     depends_on:
       - mysql
+    working_dir: /app
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        php artisan key:generate
+        php artisan cache:clear
+        php artisan route:clear
+        php artisan config:clear
+        php artisan view:clear
+        php artisan serve --host=0.0.0.0 --port=8000
 
 volumes:
   mysql_data:
