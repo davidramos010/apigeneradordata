@@ -1,51 +1,49 @@
-version: '3.8'
 services:
   mysql:
     image: mysql:8.0
-    container_name: mysqlapigeneradordata # Cambiado aquí
+    container_name: mysql_apigeneradordata
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: laravel_db
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
       MYSQL_ROOT_PASSWORD: root
-      TZ: ${TZ}
+      TZ: Europe/Madrid
     ports:
-      - "3309:3306"
+      - "3310:3306"
     volumes:
-      - db_data:/var/lib/mysql
-    user: "${MY_UID}:${MY_GID}"
+      - db_data_apigeneradordata:/var/lib/mysql
     networks:
-      - laravel
+      - apigeneradordata_net
 
   app:
     build: .
-    container_name: laravel_app
+    container_name: app_apigeneradordata
     restart: unless-stopped
     environment:
-      APP_ENV: ${APP_ENV}
-      APP_KEY: ${APP_KEY}
-      APP_DEBUG: ${APP_DEBUG}
-      APP_URL: ${APP_URL}
+      APP_ENV: local
+      APP_KEY: base64:45htVXDiQi9Dg6MtTd+MiUlVoko01W0jyFtApyI2gNs=
+      APP_DEBUG: true
+      APP_URL: http://localhost:8000
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      MY_UID: ${MY_UID}
-      MY_GID: ${MY_GID}
+      DB_DATABASE: laravel_db
+      DB_USERNAME: laravel
+      DB_PASSWORD: secret
+      TZ: Europe/Madrid
     volumes:
       - ./:/var/www/html
     depends_on:
       - mysql
+    ports:
+      - "8000:8000"
     networks:
-      - laravel
-    user: "${MY_UID}:${MY_GID}"
+      - apigeneradordata_net
 
 volumes:
-  db_data:
+  db_data_apigeneradordata:
 
 networks:
-  laravel:
+  apigeneradordata_net:
     driver: bridge
