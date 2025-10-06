@@ -29,6 +29,12 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::get('generate-nie', [GenerateDocumentController::class, 'generateNie']);
     Route::get('generate-nif', [GenerateDocumentController::class, 'generateNif']);
     Route::get('generate-ssn', [GenerateDocumentController::class, 'generateSsn']);
+
+    Route::post('validate-dni', [GenerateDocumentController::class, 'validateDni']);
+    Route::post('validate-cif', [GenerateDocumentController::class, 'validateCif']);
+    Route::post('validate-nie', [GenerateDocumentController::class, 'validateNie']);
+    Route::post('validate-nif', [GenerateDocumentController::class, 'validateNif']);
+    Route::post('validate-ssn', [GenerateDocumentController::class, 'validateSsn']);
 });
 
 

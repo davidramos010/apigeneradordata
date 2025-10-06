@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+// Incluir el archivo del helper de validación
+require_once __DIR__ . '/../../../helpers/DocumentValidationHelper.php';
+
 class GenerateDocumentController extends Controller
 {
     /**
@@ -25,6 +28,20 @@ class GenerateDocumentController extends Controller
     }
 
     /**
+     * Validate a DNI number.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function validateDni(Request $request): JsonResponse
+    {
+        $dni = $request->input('dni');
+        $isValid = validateSpanishDni($dni);
+
+        return response()->json(['dni' => $dni, 'valid' => $isValid], 200);
+    }
+
+    /**
      * Generate a random CIF number.
      *
      * @return JsonResponse
@@ -36,6 +53,20 @@ class GenerateDocumentController extends Controller
 
         // Return the generated DNI as a JSON response
         return response()->json(['cif' => $cif], 200);
+    }
+
+    /**
+     * Validate a CIF number.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function validateCif(Request $request): JsonResponse
+    {
+        $cif = $request->input('cif');
+        $isValid = validateSpanishCif($cif);
+
+        return response()->json(['cif' => $cif, 'valid' => $isValid], 200);
     }
 
     /**
@@ -53,6 +84,20 @@ class GenerateDocumentController extends Controller
     }
 
     /**
+     * Validate a NIE number.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http.JsonResponse
+     */
+    public function validateNie(Request $request): JsonResponse
+    {
+        $nie = $request->input('nie');
+        $isValid = validateSpanishNie($nie);
+
+        return response()->json(['nie' => $nie, 'valid' => $isValid], 200);
+    }
+
+    /**
      * generate a random NIF number.
      *
      * @return JsonResponse
@@ -67,6 +112,20 @@ class GenerateDocumentController extends Controller
     }
 
     /**
+     * Validate a NIF number.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http.JsonResponse
+     */
+    public function validateNif(Request $request): JsonResponse
+    {
+        $nif = $request->input('nif');
+        $isValid = validateSpanishNif($nif);
+
+        return response()->json(['nif' => $nif, 'valid' => $isValid], 200);
+    }
+
+    /**
      * Generate a random SSN number.
      *
      * @return JsonResponse
@@ -78,5 +137,19 @@ class GenerateDocumentController extends Controller
 
         // Return the generated DNI as a JSON response
         return response()->json(['ssn' => $ssn], 200);
+    }
+
+    /**
+     * Validate a SSN number.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http.JsonResponse
+     */
+    public function validateSsn(Request $request): JsonResponse
+    {
+        $ssn = $request->input('ssn');
+        $isValid = validateSsn($ssn);
+
+        return response()->json(['ssn' => $ssn, 'valid' => $isValid], 200);
     }
 }
