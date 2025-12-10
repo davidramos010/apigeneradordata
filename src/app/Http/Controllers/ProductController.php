@@ -2,127 +2,111 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Services\ProductService;
+use App\Exceptions\ResourceNotFoundException;
+use App\Exceptions\ValidationException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
+    private ProductService $productService;
 
-    const STR_PRODUCT_NOT_FOUND = 'Product not found';
-    /**
-     * Add a new product.
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function addProduct(Request $request)
+    public function __construct(ProductService $productService)
     {
-        // Validate the incoming request data
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:10|max:100',
-            'price' => 'required|numeric',
-        ]);
- 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        // Create a new product instance
-        Product::create([
-            'name' => $request->input('name'),
-            'price' => $request->input('price'),
-        ]);
-
-        // Return a success response
-        return response()->json(['message' => 'Product added successfully'], 201);
+        $this->productService = $productService;
     }
 
     /**
      * Retrieve all products.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getProducts()
+    public function getProducts(): JsonResponse
     {
-        // Retrieve all products from the database
-        $products = Product::all();
+        try {
+            $products = $this->productService->getAllProducts();
 
-        // Return the products as a JSON response
-        return $products->isEmpty()
-            ? response()->json(['message' => self::STR_PRODUCT_NOT_FOUND], 404)
-            :
-            response()->json($products,200);
+            return $products->isEmpty()
+                ? response()->json(['message' => 'No products found'], 404)
+                : response()->json($products, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve products'], 500);
+        }
     }
 
     /**
      * Retrieve a specific product by ID.
      *
-     * @param [type] $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param int $id
+     * @return JsonResponse
      */
-    public function getProduct($id)
+    public function getProduct(int $id): JsonResponse
     {
-        // Find the product by ID
-        $product = Product::find($id);
-        // Return the product as a JSON response
-        return !$product ? response()->json(['message' => self::STR_PRODUCT_NOT_FOUND ], 404) : response()->json($product,200);
+        try {
+            $product = $this->productService->getProductById($id);
+            return response()->json($product, 200);
+        } catch (ResourceNotFoundException $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve product'], 500);
+        }
     }
 
     /**
-     * Undocumented function
+     * Create a new product.
      *
      * @param Request $request
-     * @param [type] $id
-     * @return void
+     * @return JsonResponse
      */
-    public function updateProduct(Request $request, $id)
+    public function addProduct(Request $request): JsonResponse
     {
-        // Find the product by ID
-        $product = Product::find($id);
-
-        // Check if the product exists
-        if (!$product) {
-            return response()->json(['message' => self::STR_PRODUCT_NOT_FOUND ], 404);
+        try {
+            $product = $this->productService->createProduct($request->all());
+            return response()->json(['message' => 'Product created successfully', 'data' => $product], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => json_decode($e->getMessage(), true)], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to create product'], 500);
         }
-
-        // Validate the incoming request data
-        $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|string|min:10|max:100',
-            'price' => 'sometimes|numeric',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        // Update the product with the new data
-        $product->update($request->all());
-
-        // Return a success response
-        return response()->json(['message' => 'Product updated successfully'], 200);
     }
 
     /**
-     * Undocumented function
+     * Update a product.
      *
-     * @param [type] $id
-     * @return void
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
      */
-    public function deleteProduct($id)
+    public function updateProduct(Request $request, int $id): JsonResponse
     {
-        // Find the product by ID
-        $product = Product::find($id);
-
-        // Check if the product exists
-        if (!$product) {
-            return response()->json(['message' => self::STR_PRODUCT_NOT_FOUND], 404);
+        try {
+            $product = $this->productService->updateProduct($id, $request->all());
+            return response()->json(['message' => 'Product updated successfully', 'data' => $product], 200);
+        } catch (ResourceNotFoundException $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => json_decode($e->getMessage(), true)], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update product'], 500);
         }
+    }
 
-        // Delete the product
-        $product->delete();
-
-        // Return a success response
-        return response()->json(['message' => 'Product deleted successfully'], 200);
+    /**
+     * Delete a product.
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function deleteProduct(int $id): JsonResponse
+    {
+        try {
+            $this->productService->deleteProduct($id);
+            return response()->json(['message' => 'Product deleted successfully'], 200);
+        } catch (ResourceNotFoundException $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete product'], 500);
+        }
     }
 }

@@ -2,43 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GenerateDocument;
-use Illuminate\Database\Eloquent\Casts\Json;
+use App\Services\DocumentGeneratorService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-// Incluir el archivo del helper de validación
-require_once __DIR__ . '/../../../helpers/DocumentValidationHelper.php';
-
 class GenerateDocumentController extends Controller
 {
-    /**
-     * Generate a random document number.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function generateDni() : JsonResponse
-    {
-        // Generate a random DNI
-        $dni = GenerateDocument::generateRandomDni();
+    private DocumentGeneratorService $documentService;
 
-        // Return the generated DNI as a JSON response
-        return response()->json(['dni' => $dni], 200);
+    public function __construct(DocumentGeneratorService $documentService)
+    {
+        $this->documentService = $documentService;
+    }
+
+    /**
+     * Generate a random DNI number.
+     *
+     * @return JsonResponse
+     */
+    public function generateDni(): JsonResponse
+    {
+        try {
+            $dni = $this->documentService->generateDni();
+            return response()->json(['document' => 'dni', 'value' => $dni], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to generate DNI'], 500);
+        }
     }
 
     /**
      * Validate a DNI number.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function validateDni(Request $request): JsonResponse
     {
-        $dni = $request->input('dni');
-        $isValid = validateSpanishDni($dni);
+        try {
+            $dni = $request->input('dni');
 
-        return response()->json(['dni' => $dni, 'valid' => $isValid], 200);
+            if (!$dni) {
+                return response()->json(['error' => 'DNI is required'], 422);
+            }
+
+            $isValid = $this->documentService->validateDni($dni);
+            return response()->json(['document' => 'dni', 'value' => $dni, 'valid' => $isValid], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to validate DNI'], 500);
+        }
     }
 
     /**
@@ -48,25 +59,34 @@ class GenerateDocumentController extends Controller
      */
     public function generateCif(): JsonResponse
     {
-        // Generate a random DNI
-        $cif = GenerateDocument::generateRandomCif();
-
-        // Return the generated DNI as a JSON response
-        return response()->json(['cif' => $cif], 200);
+        try {
+            $cif = $this->documentService->generateCif();
+            return response()->json(['document' => 'cif', 'value' => $cif], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to generate CIF'], 500);
+        }
     }
 
     /**
      * Validate a CIF number.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function validateCif(Request $request): JsonResponse
     {
-        $cif = $request->input('cif');
-        $isValid = validateSpanishCif($cif);
+        try {
+            $cif = $request->input('cif');
 
-        return response()->json(['cif' => $cif, 'valid' => $isValid], 200);
+            if (!$cif) {
+                return response()->json(['error' => 'CIF is required'], 422);
+            }
+
+            $isValid = $this->documentService->validateCif($cif);
+            return response()->json(['document' => 'cif', 'value' => $cif, 'valid' => $isValid], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to validate CIF'], 500);
+        }
     }
 
     /**
@@ -76,53 +96,71 @@ class GenerateDocumentController extends Controller
      */
     public function generateNie(): JsonResponse
     {
-        // Generate a random DNI
-        $nie = GenerateDocument::generateRandomNie();
-
-        // Return the generated DNI as a JSON response
-        return response()->json(['nie' => $nie], 200);
+        try {
+            $nie = $this->documentService->generateNie();
+            return response()->json(['document' => 'nie', 'value' => $nie], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to generate NIE'], 500);
+        }
     }
 
     /**
      * Validate a NIE number.
      *
      * @param Request $request
-     * @return \Illuminate\Http.JsonResponse
+     * @return JsonResponse
      */
     public function validateNie(Request $request): JsonResponse
     {
-        $nie = $request->input('nie');
-        $isValid = validateSpanishNie($nie);
+        try {
+            $nie = $request->input('nie');
 
-        return response()->json(['nie' => $nie, 'valid' => $isValid], 200);
+            if (!$nie) {
+                return response()->json(['error' => 'NIE is required'], 422);
+            }
+
+            $isValid = $this->documentService->validateNie($nie);
+            return response()->json(['document' => 'nie', 'value' => $nie, 'valid' => $isValid], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to validate NIE'], 500);
+        }
     }
 
     /**
-     * generate a random NIF number.
+     * Generate a random NIF number.
      *
      * @return JsonResponse
      */
     public function generateNif(): JsonResponse
     {
-        // Generate a random DNI
-        $nif = GenerateDocument::generateRandomNif();
-
-        // Return the generated DNI as a JSON response
-        return response()->json(['nif' => $nif], 200);
+        try {
+            $nif = $this->documentService->generateNif();
+            return response()->json(['document' => 'nif', 'value' => $nif], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to generate NIF'], 500);
+        }
     }
 
     /**
      * Validate a NIF number.
      *
      * @param Request $request
-     * @return \Illuminate\Http.JsonResponse
+     * @return JsonResponse
      */
     public function validateNif(Request $request): JsonResponse
     {
-        $nif = $request->input('nif');
-        $isValid = validateSpanishNif($nif);
+        try {
+            $nif = $request->input('nif');
 
-        return response()->json(['nif' => $nif, 'valid' => $isValid], 200);
+            if (!$nif) {
+                return response()->json(['error' => 'NIF is required'], 422);
+            }
+
+            $isValid = $this->documentService->validateNif($nif);
+            return response()->json(['document' => 'nif', 'value' => $nif, 'valid' => $isValid], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to validate NIF'], 500);
+        }
     }
 
     /**
@@ -132,24 +170,33 @@ class GenerateDocumentController extends Controller
      */
     public function generateSsn(): JsonResponse
     {
-        // Generate a random DNI
-        $ssn = GenerateDocument::generateRandomSsn();
-
-        // Return the generated DNI as a JSON response
-        return response()->json(['ssn' => $ssn], 200);
+        try {
+            $ssn = $this->documentService->generateSsn();
+            return response()->json(['document' => 'ssn', 'value' => $ssn], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to generate SSN'], 500);
+        }
     }
 
     /**
      * Validate a SSN number.
      *
      * @param Request $request
-     * @return \Illuminate\Http.JsonResponse
+     * @return JsonResponse
      */
     public function validateSsn(Request $request): JsonResponse
     {
-        $ssn = $request->input('ssn');
-        $isValid = validateSsn($ssn);
+        try {
+            $ssn = $request->input('ssn');
 
-        return response()->json(['ssn' => $ssn, 'valid' => $isValid], 200);
+            if (!$ssn) {
+                return response()->json(['error' => 'SSN is required'], 422);
+            }
+
+            $isValid = $this->documentService->validateSsn($ssn);
+            return response()->json(['document' => 'ssn', 'value' => $ssn, 'valid' => $isValid], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to validate SSN'], 500);
+        }
     }
 }
