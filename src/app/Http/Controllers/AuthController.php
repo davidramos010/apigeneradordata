@@ -29,7 +29,7 @@ class AuthController extends Controller
             // Create a new user instance
             User::create([
                 'name' => $request->input('name'),
-                'role' => $request->input('role'),
+                'role' => 'user',
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')),
             ]);

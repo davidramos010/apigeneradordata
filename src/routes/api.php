@@ -16,9 +16,11 @@ use App\Http\Middleware\IsUserAuth;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
+// PRIVATE ROUTES
 Route::middleware([IsUserAuth::class])->group(function () {
+    // Agroup routes for AuthController
     Route::controller(AuthController::class)->group(function () {
-        Route::get('me', 'user', 'getUser');
+        Route::get('me', 'getUser');
         Route::post('logout', 'logout');
     });
 

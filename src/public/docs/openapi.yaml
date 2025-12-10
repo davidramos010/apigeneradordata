@@ -1,0 +1,375 @@
+openapi: 3.0.3
+info:
+  title: 'Laravel API Documentation ApiGeneradorData'
+  description: 'Documentation ApiGeneradorData'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8000'
+tags:
+  -
+    name: Endpoints
+    description: ''
+paths:
+  /api/login:
+    post:
+      summary: 'Login a user.'
+      operationId: loginAUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The email of the user.'
+                  example: user@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: 'The password of the user.'
+                  example: secret
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/register:
+    post:
+      summary: ''
+      operationId: postApiRegister
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/me:
+    get:
+      summary: 'get all information of the user'
+      operationId: getAllInformationOfTheUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthorized
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+      tags:
+        - Endpoints
+      security: []
+  /api/logout:
+    post:
+      summary: 'finalice session'
+      operationId: finaliceSession
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/products:
+    get:
+      summary: 'Retrieve all products.'
+      operationId: retrieveAllProducts
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'You are not ADMIN'
+                properties:
+                  message:
+                    type: string
+                    example: 'You are not ADMIN'
+      tags:
+        - Endpoints
+      security: []
+  /api/generate-dni:
+    get:
+      summary: 'Generate a random document number.'
+      operationId: generateARandomDocumentNumber
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthorized
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+      tags:
+        - Endpoints
+      security: []
+  /api/generate-cif:
+    get:
+      summary: 'Generate a random CIF number.'
+      operationId: generateARandomCIFNumber
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthorized
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+      tags:
+        - Endpoints
+      security: []
+  /api/generate-nie:
+    get:
+      summary: 'Generate a random NIE number.'
+      operationId: generateARandomNIENumber
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthorized
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+      tags:
+        - Endpoints
+      security: []
+  /api/generate-nif:
+    get:
+      summary: 'generate a random NIF number.'
+      operationId: generateARandomNIFNumber
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthorized
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+      tags:
+        - Endpoints
+      security: []
+  /api/generate-ssn:
+    get:
+      summary: 'Generate a random SSN number.'
+      operationId: generateARandomSSNNumber
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthorized
+                properties:
+                  message:
+                    type: string
+                    example: Unauthorized
+      tags:
+        - Endpoints
+      security: []
+  /api/validate-dni:
+    post:
+      summary: 'Validate a DNI number.'
+      operationId: validateADNINumber
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/validate-cif:
+    post:
+      summary: 'Validate a CIF number.'
+      operationId: validateACIFNumber
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/validate-nie:
+    post:
+      summary: 'Validate a NIE number.'
+      operationId: validateANIENumber
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/validate-nif:
+    post:
+      summary: 'Validate a NIF number.'
+      operationId: validateANIFNumber
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/validate-ssn:
+    post:
+      summary: 'Validate a SSN number.'
+      operationId: validateASSNNumber
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/product:
+    post:
+      summary: 'Add a new product.'
+      operationId: addANewProduct
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must be at least 10 characters. Must not be greater than 100 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                price:
+                  type: number
+                  description: ''
+                  example: 11613.31890586
+                  nullable: false
+              required:
+                - name
+                - price
+      security: []
+  '/api/product/{id}':
+    get:
+      summary: 'Retrieve a specific product by ID.'
+      operationId: retrieveASpecificProductByID
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'You are not ADMIN'
+                properties:
+                  message:
+                    type: string
+                    example: 'You are not ADMIN'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: 'Undocumented function'
+      operationId: undocumentedFunction
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must be at least 10 characters. Must not be greater than 100 characters.'
+                  example: vmqeopfuudtdsufvyvddq
+                  nullable: false
+                price:
+                  type: number
+                  description: ''
+                  example: 11613.31890586
+                  nullable: false
+      security: []
+    delete:
+      summary: 'Undocumented function'
+      operationId: undocumentedFunction
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the product.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
