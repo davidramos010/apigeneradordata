@@ -9,14 +9,14 @@ use function Knuckles\Scribe\Config\{removeStrategies, configureStrategy};
 
 return [
     // The HTML <title> for the generated documentation.
-    'title' => config('app.name').' API Documentation ApiGeneradorData',
+    'title' => config('app.name').' API Documentacion ApiGeneradorData',
 
     // A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
-    'description' => 'Documentation ApiGeneradorData',
+    'description' => 'Documentacion de la APIpiGeneradorData',
 
     // The base URL displayed in the docs.
     // If you're using `laravel` type, you can set this to a dynamic string, like '{{ config("app.tenant_url") }}' to get a dynamic base URL.
-    'base_url' => env('APP_URL', 'http://localhost:8000'),
+    'base_url' => env('APP_URL', 'http://localhost:8001'),
 
     // Routes to include in the docs
     'routes' => [
