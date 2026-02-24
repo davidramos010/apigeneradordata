@@ -1,11 +1,11 @@
 openapi: 3.0.3
 info:
-  title: 'Laravel API Documentation ApiGeneradorData'
-  description: 'Documentation ApiGeneradorData'
+  title: 'Laravel API Documentacion ApiGeneradorData'
+  description: 'Documentacion de la APIpiGeneradorData'
   version: 1.0.0
 servers:
   -
-    url: 'http://localhost:8001'
+    url: 'http://localhost:8000'
 tags:
   -
     name: Endpoints
@@ -65,25 +65,47 @@ paths:
       security: []
   /api/me:
     get:
-      summary: 'get all information of the user'
-      operationId: getAllInformationOfTheUser
+      summary: 'Get the authenticated user.'
+      operationId: getTheAuthenticatedUser
       description: ''
       parameters: []
       responses:
-        401:
+        200:
           description: ''
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  message: Unauthorized
+                  id: 1
+                  name: 'John Doe'
+                  email: john@example.com
                 properties:
-                  message:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
                     type: string
-                    example: Unauthorized
+                    example: 'John Doe'
+                  email:
+                    type: string
+                    example: john@example.com
       tags:
         - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: 'The JWT token of the user.'
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  nullable: false
+              required:
+                - token
       security: []
   /api/logout:
     post:
@@ -119,8 +141,8 @@ paths:
       security: []
   /api/generate-dni:
     get:
-      summary: 'Generate a random document number.'
-      operationId: generateARandomDocumentNumber
+      summary: 'Generate a random DNI number.'
+      operationId: generateARandomDNINumber
       description: ''
       parameters: []
       responses:
@@ -185,7 +207,7 @@ paths:
       security: []
   /api/generate-nif:
     get:
-      summary: 'generate a random NIF number.'
+      summary: 'Generate a random NIF number.'
       operationId: generateARandomNIFNumber
       description: ''
       parameters: []
@@ -279,33 +301,13 @@ paths:
       security: []
   /api/product:
     post:
-      summary: 'Add a new product.'
-      operationId: addANewProduct
+      summary: 'Create a new product.'
+      operationId: createANewProduct
       description: ''
       parameters: []
       responses: {  }
       tags:
         - Endpoints
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: 'Must be at least 10 characters. Must not be greater than 100 characters.'
-                  example: vmqeopfuudtdsufvyvddq
-                  nullable: false
-                price:
-                  type: number
-                  description: ''
-                  example: 11613.31890586
-                  nullable: false
-              required:
-                - name
-                - price
       security: []
   '/api/product/{id}':
     get:
@@ -330,34 +332,17 @@ paths:
         - Endpoints
       security: []
     put:
-      summary: 'Undocumented function'
-      operationId: undocumentedFunction
+      summary: 'Update a product.'
+      operationId: updateAProduct
       description: ''
       parameters: []
       responses: {  }
       tags:
         - Endpoints
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: 'Must be at least 10 characters. Must not be greater than 100 characters.'
-                  example: vmqeopfuudtdsufvyvddq
-                  nullable: false
-                price:
-                  type: number
-                  description: ''
-                  example: 11613.31890586
-                  nullable: false
       security: []
     delete:
-      summary: 'Undocumented function'
-      operationId: undocumentedFunction
+      summary: 'Delete a product.'
+      operationId: deleteAProduct
       description: ''
       parameters: []
       responses: {  }

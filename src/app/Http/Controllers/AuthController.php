@@ -107,9 +107,16 @@ class AuthController extends Controller
     }
 
     /**
-     * get all information of the user
-     *
-     * @return void
+     * Get the authenticated user.
+     * 
+     * @bodyParam token string required The JWT token of the user. Example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+     * 
+     * @response 200 {
+     *   "id": 1,
+     *   "name": "John Doe",
+     *   "email": "john@example.com"
+     * }
+     * 
      */
     public function getUser()
     {

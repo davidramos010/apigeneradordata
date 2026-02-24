@@ -103,7 +103,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'get all information of the user'
+      title: 'Get the authenticated user.'
       description: ''
       authenticated: false
       custom: []
@@ -114,18 +114,31 @@ endpoints:
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
+    bodyParameters:
+      token:
+        name: token
+        description: 'The JWT token of the user.'
+        required: true
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
     fileParameters: []
     responses:
       -
-        status: 401
-        content: '{"message":"Unauthorized"}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        status: 200
+        content: |-
+          {
+            "id": 1,
+            "name": "John Doe",
+            "email": "john@example.com"
+          }
+        headers: []
+        description: ''
         custom: []
     responseFields: []
     auth: []
@@ -211,7 +224,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Generate a random document number.'
+      title: 'Generate a random DNI number.'
       description: ''
       authenticated: false
       custom: []
@@ -328,7 +341,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'generate a random NIF number.'
+      title: 'Generate a random NIF number.'
       description: ''
       authenticated: false
       custom: []
@@ -556,7 +569,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Add a new product.'
+      title: 'Create a new product.'
       description: ''
       authenticated: false
       custom: []
@@ -567,30 +580,8 @@ endpoints:
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
-    bodyParameters:
-      name:
-        name: name
-        description: 'Must be at least 10 characters. Must not be greater than 100 characters.'
-        required: true
-        example: vmqeopfuudtdsufvyvddq
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      price:
-        name: price
-        description: ''
-        required: true
-        example: 11613.31890586
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-    cleanBodyParameters:
-      name: vmqeopfuudtdsufvyvddq
-      price: 11613.31890586
+    bodyParameters: []
+    cleanBodyParameters: []
     fileParameters: []
     responses: []
     responseFields: []
@@ -658,7 +649,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Undocumented function'
+      title: 'Update a product.'
       description: ''
       authenticated: false
       custom: []
@@ -680,30 +671,8 @@ endpoints:
       id: consequatur
     queryParameters: []
     cleanQueryParameters: []
-    bodyParameters:
-      name:
-        name: name
-        description: 'Must be at least 10 characters. Must not be greater than 100 characters.'
-        required: false
-        example: vmqeopfuudtdsufvyvddq
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      price:
-        name: price
-        description: ''
-        required: false
-        example: 11613.31890586
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-    cleanBodyParameters:
-      name: vmqeopfuudtdsufvyvddq
-      price: 11613.31890586
+    bodyParameters: []
+    cleanBodyParameters: []
     fileParameters: []
     responses: []
     responseFields: []
@@ -721,7 +690,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Undocumented function'
+      title: 'Delete a product.'
       description: ''
       authenticated: false
       custom: []

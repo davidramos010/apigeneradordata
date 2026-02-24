@@ -1,0 +1,13 @@
+[Unit]
+Description=Fix Docker iptables issue
+After=docker.socket docker.service
+Wants=docker.service
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/bin/bash -c 'sleep 5 && for table in filter nat mangle raw; do iptables -F -t $table 2>/dev/null || true; iptables -X -t $table 2>/dev/null || true; done && systemctl restart docker'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

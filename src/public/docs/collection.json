@@ -9,9 +9,9 @@
         }
     ],
     "info": {
-        "name": "Laravel API Documentation ApiGeneradorData",
-        "_postman_id": "bff50bd6-86c8-4dd9-8482-1a8c7bfa1d67",
-        "description": "Documentation ApiGeneradorData",
+        "name": "Laravel API Documentacion ApiGeneradorData",
+        "_postman_id": "dc88769c-ec61-4c75-bbb5-5506f0317496",
+        "description": "Documentacion de la APIpiGeneradorData",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
     "item": [
@@ -86,7 +86,7 @@
                     "response": []
                 },
                 {
-                    "name": "get all information of the user",
+                    "name": "Get the authenticated user.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -105,7 +105,10 @@
                                 "value": "application\/json"
                             }
                         ],
-                        "body": null,
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"}"
+                        },
                         "description": "",
                         "auth": {
                             "type": "noauth"
@@ -113,22 +116,9 @@
                     },
                     "response": [
                         {
-                            "header": [
-                                {
-                                    "key": "cache-control",
-                                    "value": "no-cache, private"
-                                },
-                                {
-                                    "key": "content-type",
-                                    "value": "application\/json"
-                                },
-                                {
-                                    "key": "access-control-allow-origin",
-                                    "value": "*"
-                                }
-                            ],
-                            "code": 401,
-                            "body": "{\"message\":\"Unauthorized\"}",
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"id\": 1,\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\"\n}",
                             "name": ""
                         }
                     ]
@@ -210,7 +200,7 @@
                     ]
                 },
                 {
-                    "name": "Generate a random document number.",
+                    "name": "Generate a random DNI number.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -354,7 +344,7 @@
                     ]
                 },
                 {
-                    "name": "generate a random NIF number.",
+                    "name": "Generate a random NIF number.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -590,7 +580,7 @@
                     "response": []
                 },
                 {
-                    "name": "Add a new product.",
+                    "name": "Create a new product.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -609,10 +599,7 @@
                                 "value": "application\/json"
                             }
                         ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"name\":\"vmqeopfuudtdsufvyvddq\",\"price\":11613.31890586}"
-                        },
+                        "body": null,
                         "description": "",
                         "auth": {
                             "type": "noauth"
@@ -677,7 +664,7 @@
                     ]
                 },
                 {
-                    "name": "Undocumented function",
+                    "name": "Update a product.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",
@@ -704,10 +691,7 @@
                                 "value": "application\/json"
                             }
                         ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\"name\":\"vmqeopfuudtdsufvyvddq\",\"price\":11613.31890586}"
-                        },
+                        "body": null,
                         "description": "",
                         "auth": {
                             "type": "noauth"
@@ -716,7 +700,7 @@
                     "response": []
                 },
                 {
-                    "name": "Undocumented function",
+                    "name": "Delete a product.",
                     "request": {
                         "url": {
                             "host": "{{baseUrl}}",

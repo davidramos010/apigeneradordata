@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Laravel API Documentation ApiGeneradorData</title>
+    <title>Laravel API Documentacion ApiGeneradorData</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 
@@ -26,7 +26,7 @@
             </style>
 
     <script>
-        var tryItOutBaseUrl = "http://localhost:8001";
+        var tryItOutBaseUrl = "http://localhost:8000";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
@@ -78,7 +78,7 @@
                                 <a href="#endpoints-POSTapi-register">POST api/register</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-me">
-                                <a href="#endpoints-GETapi-me">get all information of the user</a>
+                                <a href="#endpoints-GETapi-me">Get the authenticated user.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-logout">
                                 <a href="#endpoints-POSTapi-logout">finalice session</a>
@@ -87,7 +87,7 @@
                                 <a href="#endpoints-GETapi-products">Retrieve all products.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-generate-dni">
-                                <a href="#endpoints-GETapi-generate-dni">Generate a random document number.</a>
+                                <a href="#endpoints-GETapi-generate-dni">Generate a random DNI number.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-generate-cif">
                                 <a href="#endpoints-GETapi-generate-cif">Generate a random CIF number.</a>
@@ -96,7 +96,7 @@
                                 <a href="#endpoints-GETapi-generate-nie">Generate a random NIE number.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-generate-nif">
-                                <a href="#endpoints-GETapi-generate-nif">generate a random NIF number.</a>
+                                <a href="#endpoints-GETapi-generate-nif">Generate a random NIF number.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-generate-ssn">
                                 <a href="#endpoints-GETapi-generate-ssn">Generate a random SSN number.</a>
@@ -117,16 +117,16 @@
                                 <a href="#endpoints-POSTapi-validate-ssn">Validate a SSN number.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-product">
-                                <a href="#endpoints-POSTapi-product">Add a new product.</a>
+                                <a href="#endpoints-POSTapi-product">Create a new product.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-product--id-">
                                 <a href="#endpoints-GETapi-product--id-">Retrieve a specific product by ID.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-PUTapi-product--id-">
-                                <a href="#endpoints-PUTapi-product--id-">Undocumented function</a>
+                                <a href="#endpoints-PUTapi-product--id-">Update a product.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-product--id-">
-                                <a href="#endpoints-DELETEapi-product--id-">Undocumented function</a>
+                                <a href="#endpoints-DELETEapi-product--id-">Delete a product.</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -139,7 +139,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: October 27, 2025</li>
+        <li>Last updated: February 12, 2026</li>
     </ul>
 </div>
 
@@ -147,9 +147,9 @@
     <div class="dark-box"></div>
     <div class="content">
         <h1 id="introduction">Introduction</h1>
-<p>Documentation ApiGeneradorData</p>
+<p>Documentacion de la APIpiGeneradorData</p>
 <aside>
-    <strong>Base URL</strong>: <code>http://localhost:8001</code>
+    <strong>Base URL</strong>: <code>http://localhost:8000</code>
 </aside>
 <pre><code>This documentation aims to provide all the information you need to work with our API.
 
@@ -176,7 +176,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:8001/api/login" \
+    "http://localhost:8000/api/login" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -188,7 +188,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/login"
+    "http://localhost:8000/api/login"
 );
 
 const headers = {
@@ -327,14 +327,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:/api/register" \
+    "http://localhost:8000/api/register" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/register"
+    "http://localhost:8000/api/register"
 );
 
 const headers = {
@@ -422,7 +422,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-GETapi-me">get all information of the user</h2>
+                    <h2 id="endpoints-GETapi-me">Get the authenticated user.</h2>
 
 <p>
 </p>
@@ -435,14 +435,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:/api/me" \
+    --get "http://localhost:8000/api/me" \
     --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre></div>
+    --header "Accept: application/json" \
+    --data "{
+    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"
+}"
+</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/me"
+    "http://localhost:8000/api/me"
 );
 
 const headers = {
@@ -450,28 +454,28 @@ const headers = {
     "Accept": "application/json",
 };
 
+let body = {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+};
+
 fetch(url, {
     method: "GET",
     headers,
+    body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
 
 <span id="example-responses-GETapi-me">
             <blockquote>
-            <p>Example response (401):</p>
+            <p>Example response (200):</p>
         </blockquote>
-                <details class="annotation">
-            <summary style="cursor: pointer;">
-                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-            </summary>
-            <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre></details>         <pre>
+                <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;Unauthorized&quot;
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;John Doe&quot;,
+    &quot;email&quot;: &quot;john@example.com&quot;
 }</code>
  </pre>
     </span>
@@ -544,7 +548,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        </form>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>token</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="token"                data-endpoint="GETapi-me"
+               value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+               data-component="body">
+    <br>
+<p>The JWT token of the user. Example: <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></p>
+        </div>
+        </form>
 
                     <h2 id="endpoints-POSTapi-logout">finalice session</h2>
 
@@ -559,14 +575,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:/api/logout" \
+    "http://localhost:8000/api/logout" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/logout"
+    "http://localhost:8000/api/logout"
 );
 
 const headers = {
@@ -667,14 +683,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:/api/products" \
+    --get "http://localhost:8000/api/products" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/products"
+    "http://localhost:8000/api/products"
 );
 
 const headers = {
@@ -778,7 +794,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-GETapi-generate-dni">Generate a random document number.</h2>
+                    <h2 id="endpoints-GETapi-generate-dni">Generate a random DNI number.</h2>
 
 <p>
 </p>
@@ -791,14 +807,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:/api/generate-dni" \
+    --get "http://localhost:8000/api/generate-dni" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/generate-dni"
+    "http://localhost:8000/api/generate-dni"
 );
 
 const headers = {
@@ -915,14 +931,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:/api/generate-cif" \
+    --get "http://localhost:8000/api/generate-cif" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/generate-cif"
+    "http://localhost:8000/api/generate-cif"
 );
 
 const headers = {
@@ -1039,14 +1055,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:/api/generate-nie" \
+    --get "http://localhost:8000/api/generate-nie" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/generate-nie"
+    "http://localhost:8000/api/generate-nie"
 );
 
 const headers = {
@@ -1150,7 +1166,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-GETapi-generate-nif">generate a random NIF number.</h2>
+                    <h2 id="endpoints-GETapi-generate-nif">Generate a random NIF number.</h2>
 
 <p>
 </p>
@@ -1163,14 +1179,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:/api/generate-nif" \
+    --get "http://localhost:8000/api/generate-nif" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/generate-nif"
+    "http://localhost:8000/api/generate-nif"
 );
 
 const headers = {
@@ -1287,14 +1303,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:/api/generate-ssn" \
+    --get "http://localhost:8000/api/generate-ssn" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/generate-ssn"
+    "http://localhost:8000/api/generate-ssn"
 );
 
 const headers = {
@@ -1411,14 +1427,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:/api/validate-dni" \
+    "http://localhost:8000/api/validate-dni" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/validate-dni"
+    "http://localhost:8000/api/validate-dni"
 );
 
 const headers = {
@@ -1519,14 +1535,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:/api/validate-cif" \
+    "http://localhost:8000/api/validate-cif" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/validate-cif"
+    "http://localhost:8000/api/validate-cif"
 );
 
 const headers = {
@@ -1627,14 +1643,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:/api/validate-nie" \
+    "http://localhost:8000/api/validate-nie" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/validate-nie"
+    "http://localhost:8000/api/validate-nie"
 );
 
 const headers = {
@@ -1735,14 +1751,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:/api/validate-nif" \
+    "http://localhost:8000/api/validate-nif" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/validate-nif"
+    "http://localhost:8000/api/validate-nif"
 );
 
 const headers = {
@@ -1843,14 +1859,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:/api/validate-ssn" \
+    "http://localhost:8000/api/validate-ssn" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/validate-ssn"
+    "http://localhost:8000/api/validate-ssn"
 );
 
 const headers = {
@@ -1938,7 +1954,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-POSTapi-product">Add a new product.</h2>
+                    <h2 id="endpoints-POSTapi-product">Create a new product.</h2>
 
 <p>
 </p>
@@ -1951,19 +1967,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
-    "http://localhost:/api/product" \
+    "http://localhost:8000/api/product" \
     --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"name\": \"vmqeopfuudtdsufvyvddq\",
-    \"price\": 11613.31890586
-}"
-</code></pre></div>
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/product"
+    "http://localhost:8000/api/product"
 );
 
 const headers = {
@@ -1971,15 +1982,9 @@ const headers = {
     "Accept": "application/json",
 };
 
-let body = {
-    "name": "vmqeopfuudtdsufvyvddq",
-    "price": 11613.31890586
-};
-
 fetch(url, {
     method: "POST",
     headers,
-    body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -2055,30 +2060,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-        <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="name"                data-endpoint="POSTapi-product"
-               value="vmqeopfuudtdsufvyvddq"
-               data-component="body">
-    <br>
-<p>Must be at least 10 characters. Must not be greater than 100 characters. Example: <code>vmqeopfuudtdsufvyvddq</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>price</code></b>&nbsp;&nbsp;
-<small>number</small>&nbsp;
- &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="price"                data-endpoint="POSTapi-product"
-               value="11613.31890586"
-               data-component="body">
-    <br>
-<p>Example: <code>11613.31890586</code></p>
-        </div>
-        </form>
+                        </form>
 
                     <h2 id="endpoints-GETapi-product--id-">Retrieve a specific product by ID.</h2>
 
@@ -2093,14 +2075,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:/api/product/consequatur" \
+    --get "http://localhost:8000/api/product/consequatur" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/product/consequatur"
+    "http://localhost:8000/api/product/consequatur"
 );
 
 const headers = {
@@ -2216,7 +2198,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
-                    <h2 id="endpoints-PUTapi-product--id-">Undocumented function</h2>
+                    <h2 id="endpoints-PUTapi-product--id-">Update a product.</h2>
 
 <p>
 </p>
@@ -2229,19 +2211,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request PUT \
-    "http://localhost:/api/product/consequatur" \
+    "http://localhost:8000/api/product/consequatur" \
     --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"name\": \"vmqeopfuudtdsufvyvddq\",
-    \"price\": 11613.31890586
-}"
-</code></pre></div>
+    --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/product/consequatur"
+    "http://localhost:8000/api/product/consequatur"
 );
 
 const headers = {
@@ -2249,15 +2226,9 @@ const headers = {
     "Accept": "application/json",
 };
 
-let body = {
-    "name": "vmqeopfuudtdsufvyvddq",
-    "price": 11613.31890586
-};
-
 fetch(url, {
     method: "PUT",
     headers,
-    body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -2345,32 +2316,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>The ID of the product. Example: <code>consequatur</code></p>
             </div>
-                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-        <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="text" style="display: none"
-                              name="name"                data-endpoint="PUTapi-product--id-"
-               value="vmqeopfuudtdsufvyvddq"
-               data-component="body">
-    <br>
-<p>Must be at least 10 characters. Must not be greater than 100 characters. Example: <code>vmqeopfuudtdsufvyvddq</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>price</code></b>&nbsp;&nbsp;
-<small>number</small>&nbsp;
-<i>optional</i> &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="price"                data-endpoint="PUTapi-product--id-"
-               value="11613.31890586"
-               data-component="body">
-    <br>
-<p>Example: <code>11613.31890586</code></p>
-        </div>
-        </form>
+                    </form>
 
-                    <h2 id="endpoints-DELETEapi-product--id-">Undocumented function</h2>
+                    <h2 id="endpoints-DELETEapi-product--id-">Delete a product.</h2>
 
 <p>
 </p>
@@ -2383,14 +2331,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost:/api/product/consequatur" \
+    "http://localhost:8000/api/product/consequatur" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:/api/product/consequatur"
+    "http://localhost:8000/api/product/consequatur"
 );
 
 const headers = {
