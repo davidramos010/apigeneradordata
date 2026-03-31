@@ -40,11 +40,13 @@ The project includes a `Dockerfile` and `docker-compose.yml` file to facilitate 
 
 2. Build and run the Docker containers:
    ```
-   docker-compose up -d
+   docker-compose up -d --build
    ```
 
 3. Access the application:
-   Open your browser and navigate to `http://localhost`.
+   Open your browser and navigate to `http://localhost:8001`.
+
+4. Access MySQL (host): `127.0.0.1:3307`, usuario `laravel`, password `secret`.
 
 ## Usage
 

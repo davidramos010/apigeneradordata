@@ -10,9 +10,15 @@ services:
       MYSQL_ROOT_PASSWORD: root
       TZ: Europe/Madrid
     ports:
-      - "3310:3306"
+      - "3307:3306"  # Host 3307 expone MySQL interno 3306
     volumes:
       - db_data_apigeneradordata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     networks:
       - apigeneradordata_net
 
@@ -24,7 +30,7 @@ services:
       APP_ENV: local
       APP_KEY: base64:45htVXDiQi9Dg6MtTd+MiUlVoko01W0jyFtApyI2gNs=
       APP_DEBUG: true
-      APP_URL: http://localhost:8000
+      APP_URL: http://localhost:8001
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_PORT: 3306
@@ -32,14 +38,18 @@ services:
       DB_USERNAME: laravel
       DB_PASSWORD: secret
       TZ: Europe/Madrid
+      XDEBUG_MODE: debug
+      XDEBUG_CONFIG: "client_host=host.docker.internal client_port=9003"
     volumes:
-      - ./:/var/www/html
+      - ./:/var/www/html:cached
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     ports:
-      - "8000:8000"
+      - "8001:8000"  # Host 8001 expone Laravel server en 8000
     networks:
       - apigeneradordata_net
+    command: ["/usr/local/bin/docker-entrypoint.sh"]
 
 volumes:
   db_data_apigeneradordata:

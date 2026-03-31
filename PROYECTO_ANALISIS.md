@@ -160,17 +160,24 @@ apigeneradordata/
 
 **MySQL (Servicio BD)**
 - Imagen: `mysql:8.0`
-- Puerto Host: `3310` → Container `3306`
+- Puerto Host: `3307` → Container `3306` (solicitado)
 - Database: `laravel_db`
 - Usuario: `laravel` / Contraseña: `secret`
 - Root Password: `root`
 - Timezone: `Europe/Madrid`
+- Healthcheck: `mysqladmin ping`, restart automático
 
 **Laravel App (Servicio API)**
 - Imagen: PHP 8.2-FPM (Dockerfile custom)
-- Puerto Host: `8000` → Container `8000`
-- Comando: `php artisan serve --host=0.0.0.0 --port=8000`
-- Volumen: `./ → /var/www/html` (desarrollo en vivo)
+- Puerto Host: `8001` → Container `8000` (solicitado)
+- Comando: `/usr/local/bin/docker-entrypoint.sh` → `php artisan serve --host=0.0.0.0 --port=8000`
+- Volumen: `./ → /var/www/html` (desarrollo en vivo, permisos controlados)
+- Elementos automáticos al inicio:
+  - `composer install`
+  - `php artisan key:generate --force`
+  - `php artisan migrate --force`
+  - `php artisan db:seed --force`
+- Xdebug configurado en `xdebug.mode=develop,debug`, `xdebug.start_with_request=yes`, `xdebug.client_host=host.docker.internal`, `xdebug.client_port=9003`
 - JWT Key: `base64:45htVXDiQi9Dg6MtTd+MiUlVoko01W0jyFtApyI2gNs=`
 
 ---
