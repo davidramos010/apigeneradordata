@@ -73,10 +73,11 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Generate a random CIF number.'
+      title: 'Generate random CIF numbers.'
       description: |-
         Permission: Only authenticated users can access this endpoint.
-        this endpoint generates a random CIF (Código de Identificación Fiscal) number, which is
+        This endpoint generates one or more random CIF (Código de Identificación Fiscal) numbers based on the "result" parameter.
+        The "result" parameter specifies how many CIFs to generate (default: 1, minimum: 1, maximum: 20).
       authenticated: true
       custom: []
     headers:
@@ -85,8 +86,19 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      result:
+        name: result
+        description: 'The number of CIFs to generate. Default: 1. Min: 1. Max: 20.'
+        required: false
+        example: 17
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      result: 17
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -95,7 +107,16 @@ endpoints:
         status: 200
         content: |-
           {
-            "cif": "A12345678"
+            ["A12345678", "B87654321"]
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "message": "The result parameter must be between 1 and 20."
           }
         headers: []
         description: ''

@@ -44,15 +44,20 @@ class GenerateDocumentController extends Controller
     }
 
     /**
-     * Generate a random CIF number.
+     * Generate random CIF numbers.
      * 
      * Permission: Only authenticated users can access this endpoint.
-     * this endpoint generates a random CIF (Código de Identificación Fiscal) number, which is   
+     * This endpoint generates one or more random CIF (Código de Identificación Fiscal) numbers based on the "result" parameter.
+     * The "result" parameter specifies how many CIFs to generate (default: 1, minimum: 1, maximum: 20).
      *
      * @authenticated
+     * @queryParam result integer The number of CIFs to generate. Default: 1. Min: 1. Max: 20.
      * 
      * @response 200 {
-     *   "cif": "A12345678"
+     *   ["A12345678", "B87654321"]
+     * }
+     * @response 400 {
+     *   "message": "The result parameter must be between 1 and 20."
      * }
      * @response 401 {
      *   "message": "Unauthenticated."
@@ -62,13 +67,24 @@ class GenerateDocumentController extends Controller
      * }
      * @return \Illuminate\Http\JsonResponse
      */
-    public function generateCif(): JsonResponse
+    public function generateCif(Request $request): JsonResponse
     {
-        // Generate a random DNI
-        $cif = GenerateDocument::generateRandomCif();
+        // Get the result parameter from the query string, default to 1
+        $result = (int) $request->query('result', 1);
 
-        // Return the generated DNI as a JSON response
-        return response()->json(['cif' => $cif], 200);
+        // Validate the result parameter (minimum 1, maximum 20)
+        if ($result < 1 || $result > 20) {
+            return response()->json(['message' => 'The result parameter must be between 1 and 20.'], 400);
+        }
+
+        // Generate multiple CIFs
+        $cifs = [];
+        for ($i = 0; $i < $result; $i++) {
+            $cifs[] = GenerateDocument::generateRandomCif();
+        }
+
+        // Return the generated CIFs as a JSON array
+        return response()->json($cifs, 200);
     }
 
 
