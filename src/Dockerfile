@@ -13,6 +13,7 @@ RUN apt-get update \
         unzip \
         git \
         curl \
+        default-mysql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
@@ -39,9 +40,11 @@ WORKDIR /var/www/html
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Define permisos iniciales de directorio
+# Define permisos iniciales de directorio (779 para permitir escritura desde el host)
 RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache || true
+    chmod -R 777 /var/www/html/storage && \
+    chmod -R 777 /var/www/html/bootstrap/cache && \
+    chmod -R 777 /var/www/html/public/storage || true
 
 EXPOSE 9000
 CMD ["/usr/local/bin/docker-entrypoint.sh"]

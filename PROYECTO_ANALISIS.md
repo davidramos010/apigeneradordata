@@ -185,85 +185,127 @@ apigeneradordata/
 ## 🚀 Guía de Inicio con Docker
 
 ### Requisitos Previos
-- Docker y Docker Compose instalados
-- Git (para clonar el proyecto)
+- Docker Engine con Docker Compose v2 (plugin nativo integrado)
+- Git
 - Al menos 2GB de RAM disponible
-- Puertos `8000` y `3310` disponibles
+- Puertos `8001` y `3307` disponibles
 
-### Paso 1: Preparación del Proyecto
+### Paso 1: Clonar el Proyecto
 
 ```bash
-# 1. Navegar al directorio del proyecto
-cd /home/david/Documentos/desarrollo/apigeneradordata
-
-# 2. Verificar que docker-compose.yml existe
-ls -la docker-compose.yml
+cd ~
+git clone <repository-url>
+cd apigeneradordata
 ```
 
-### Paso 2: Configurar Variables de Entorno
+### Paso 2: Iniciar Contenedores (Docker Compose v2)
 
 ```bash
-# 1. Copiar archivo .env si no existe
-cp .env.example .env 2>/dev/null || echo "Usando .env existente"
+# Construir e iniciar en background con un solo comando
+docker compose up -d --build
 
-# 2. Editar .env (valores importantes)
-# Asegurar que estos valores coinciden con docker-compose.yml:
-# DB_HOST=mysql
-# DB_PORT=3306
-# DB_DATABASE=laravel_db
-# DB_USERNAME=laravel
-# DB_PASSWORD=secret
-# APP_DEBUG=true
-# APP_ENV=local
-```
-
-### Paso 3: Construir e Iniciar Contenedores
-
-```bash
-# 1. Construir las imágenes Docker (primera vez)
-docker-compose build
-
-# 2. Iniciar los servicios en background
-docker-compose up -d
-
-# 3. Verificar que los servicios están running
-docker-compose ps
+# Verificar estado
+docker compose ps
 
 # Debe mostrar:
-# - apigeneradordata-mysql-1    : RUNNING (puerto 3310)
-# - apigeneradordata-laravel-1  : RUNNING (puerto 8000)
+# NAME                          STATUS
+# mysql_apigeneradordata        Up (healthy)
+# app_apigeneradordata          Up
 ```
 
-### Paso 4: Configurar la Aplicación Laravel
+### Paso 3: Verificar que la API está lista
 
 ```bash
-# 1. Acceder al contenedor de Laravel
-docker-compose exec laravel bash
+# Ver logs (espera hasta ver "Server running...")
+docker compose logs -f app
 
-# Dentro del contenedor, ejecutar:
-
-# 2. Generar clave de aplicación
-php artisan key:generate
-
-# 3. Ejecutar migraciones (crear tablas BD)
-php artisan migrate
-
-# 4. (Opcional) Sembrar datos iniciales
-php artisan db:seed
-
-# 5. Limpiar caché
-php artisan cache:clear
-php artisan config:clear
-
-# 6. Salir del contenedor
-exit
+# En otra terminal, probar endpoint
+curl http://localhost:8001
 ```
 
-### Paso 5: Verificar la Instalación
+### Paso 4: Acceder a Comandos Laravel
 
 ```bash
-# 1. Probar endpoint de registro
-curl -X POST http://localhost:8000/api/register \
+# Ejecutar artisan dentro del contenedor
+docker compose exec app php artisan tinker
+
+# O entrar en bash
+docker compose exec app bash
+```
+
+### Paso 5: Conectar a Base de Datos
+
+```bash
+# Desde el host (requiere cliente mysql)
+mysql -h 127.0.0.1 -P 3307 -u laravel -psecret laravel_db
+
+# O desde dentro del contenedor app
+docker compose exec app mysql -h mysql -u laravel -psecret laravel_db
+```
+
+### Detener y Limpiar
+
+```bash
+# Detener (sin eliminar data)
+docker compose stop
+
+# Reiniciar
+docker compose up -d
+
+# Detener y eliminar completamente (incluyendo volúmenes)
+docker compose down -v
+```
+
+## Referencia Rápida (Docker Compose v2)
+
+| Tarea | Comando |
+|-------|----------|
+| Iniciar | `docker compose up -d --build` |
+| Ver estado | `docker compose ps` |
+| Ver logs | `docker compose logs -f app` |
+| Ejecutar cmd | `docker compose exec app php artisan migrate:fresh --seed` |
+| Entrar bash | `docker compose exec app bash` |
+| Detener | `docker compose stop` |
+| Remover todo | `docker compose down -v` |
+
+## Solución de Problemas
+
+### Puerto en uso
+```bash
+# Editar src/docker-compose.yml
+# ports:
+#   - "8001:8000"  # Cambiar 8001 a otro puerto
+#   - "3307:3306"  # O 3307 a otro puerto
+```
+
+### Base de datos no conecta
+```bash
+# Verificar que MySQL esté healthy
+docker compose ps
+
+# Ver logs de MySQL
+docker compose logs mysql
+
+# Si falla, reiniciar desde cero
+docker compose down -v
+docker compose up -d --build
+```
+
+### Permisos en storage
+```bash
+# Rectificación manual
+docker compose exec app bash -c 'chown -R www-data:www-data /var/www/html/storage'
+```
+
+### Xdebug no conecta
+- Verificar que IDE/editor escucha en puerto 9003
+- Firewall debe permitir conexión Docker → Host
+- Validar en contenedor: `docker compose exec app php --ri xdebug`
+
+### Primer registro de usuario
+
+```bash
+curl -X POST http://localhost:8001/api/register \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Test User",

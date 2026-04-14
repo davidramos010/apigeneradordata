@@ -10,11 +10,11 @@ services:
       MYSQL_ROOT_PASSWORD: root
       TZ: Europe/Madrid
     ports:
-      - "3307:3306"  # Host 3307 expone MySQL interno 3306
+      - "3307:3306"
     volumes:
       - db_data_apigeneradordata:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -37,6 +37,7 @@ services:
       DB_DATABASE: laravel_db
       DB_USERNAME: laravel
       DB_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
       TZ: Europe/Madrid
       XDEBUG_MODE: debug
       XDEBUG_CONFIG: "client_host=host.docker.internal client_port=9003"
