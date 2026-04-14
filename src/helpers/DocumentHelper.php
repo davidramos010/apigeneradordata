@@ -92,6 +92,103 @@ function generateValidSpanishCif(): string
     return $prefix . $number . $controlChar;
 }
 
+/**
+ * Genera un CIF válido según el tipo de entidad especificado por $strType.
+ * El parámetro $strType debe ser una letra que indique el tipo de entidad (por ejemplo, 'A' para sociedades anónimas, 'B' para sociedades de responsabilidad limitada,
+ * 
+ * Sociedades Mercantiles y de Capital
+ * A: Sociedades Anónimas (S.A.).
+ * B: Sociedades de Responsabilidad Limitada (S.L. o S.R.L.).
+ * C: Sociedades Colectivas.
+ * D: Sociedades Comanditarias.
+ * 
+ * Entidades Sociales, Civiles y Sin Personalidad Jurídica
+ * E: Comunidades de bienes, herencias yacentes y otras entidades sin personalidad jurídica.
+ * F: Sociedades Cooperativas.
+ * G: Asociaciones y Fundaciones.
+ * H: Comunidades de propietarios en régimen de propiedad horizontal.
+ * J: Sociedades Civiles (con o sin personalidad jurídica).
+ * U: Uniones Temporales de Empresas (UTE).
+ * V: Otros tipos de entidades no definidos en el resto de claves.
+ * 
+ * Administración y Entidades Públicas
+ * P: Corporaciones Locales (Ayuntamientos, Diputaciones).
+ * Q: Organismos públicos.
+ * S: Órganos de la Administración del Estado y de las Comunidades Autónomas.
+ * 
+ * Entidades Religiosas y Extranjeras
+ * R: Congregaciones e instituciones religiosas.
+ * N: Entidades extranjeras (empresas internacionales que operan en España pero no tienen domicilio social aquí).
+ * W: Establecimientos permanentes de entidades no residentes en España.
+ * 
+ * Nota Adicional (Personas Físicas Especiales):
+ * Aunque el CIF tradicionalmente aplicaba a empresas, dentro del sistema actual del NIF existen tres letras adicionales reservadas para personas físicas que se encuentran en situaciones especiales (no tienen DNI * ni NIE):
+ * 
+ * K: Personas físicas españolas, menores de 14 años, residentes en España sin DNI.
+ * L: Personas físicas españolas, no residentes en España y sin DNI.
+ * M: Personas físicas extranjeras que carecen de NIE.
+ */
+function generateValidSpanishCifByType(string $strType): string
+{
+    $tipo = strtoupper(trim($strType));
+    $letrasValidas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'N', 'P', 'Q', 'R', 'S', 'U', 'V', 'W'];
+
+    if (!in_array($tipo, $letrasValidas)) {
+        throw new Exception("Tipo de letra no válido para un CIF. Letras válidas: " . implode(", ", $letrasValidas));
+    }
+
+    // 1. Generar 7 dígitos aleatorios
+    // Los dos primeros suelen ser el código de la provincia (01-99)
+    $provincia = str_pad(mt_rand(1, 99), 2, '0', STR_PAD_LEFT);
+    // Los cinco siguientes son correlativos de inscripción
+    $correlativo = str_pad(mt_rand(0, 99999), 5, '0', STR_PAD_LEFT);
+    $digitos = $provincia . $correlativo;
+
+    // 2. Calcular el dígito de control
+    $sumaPar = 0;
+    $sumaImpar = 0;
+
+    for ($i = 0; $i < 7; $i++) {
+        $num = (int)$digitos[$i];
+        
+        if ($i % 2 === 0) {
+            // Posiciones impares (índices 0, 2, 4, 6) -> Se multiplican por 2
+            // Si el resultado tiene dos cifras, se suman entre sí.
+            $multiplicado = (string)($num * 2);
+            $sumaImpar += (int)($multiplicado[0]) + (isset($multiplicado[1]) ? (int)($multiplicado[1]) : 0);
+        } else {
+            // Posiciones pares (índices 1, 3, 5) -> Se suman tal cual
+            $sumaPar += $num;
+        }
+    }
+
+    $sumaTotal = $sumaPar + $sumaImpar;
+    
+    // Obtenemos las unidades de la suma total
+    $unidades = $sumaTotal % 10;
+    
+    // El dígito de control numérico es 10 menos las unidades (si unidades es 0, el control es 0)
+    $digitoControl = $unidades === 0 ? 0 : 10 - $unidades;
+
+    // 3. Determinar si el carácter de control final debe ser Letra o Número
+    // Mapa de correspondencia para letras de control: 0=J, 1=A, 2=B, 3=C...
+    $mapaLetrasControl = 'JABCDEFGHI'; 
+    
+    $tiposQueUsanLetra = ['K', 'P', 'Q', 'S', 'W'];
+    $tiposQueUsanNumero = ['A', 'B', 'E', 'H'];
+    // El resto (C, D, F, G, J, N, R, U, V) pueden usar ambos. Por convención, usaremos número para ellos.
+
+    if (in_array($tipo, $tiposQueUsanLetra)) {
+        // Se devuelve con letra al final
+        $caracterControl = $mapaLetrasControl[$digitoControl];
+    } else {
+        // Se devuelve con número al final
+        $caracterControl = $digitoControl;
+    }
+
+    return $tipo . $digitos . $caracterControl;
+}
+
 function generateValidSpanishNif(): string
 {
     // Array de letras de control para el NIF

@@ -25,6 +25,12 @@ class GenerateDocument
         return generateValidSpanishCif();
     }
 
+    public static function generateRandomCifByType(string $strType)
+    {
+        // Usar la función del helper para generar un CIF válido según el tipo
+        return generateValidSpanishCifByType($strType);
+    }
+
     public static function generateRandomNif()
     {
         // Usar la función del helper para generar un NIF válido
