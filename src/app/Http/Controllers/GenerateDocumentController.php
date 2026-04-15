@@ -19,10 +19,13 @@ class GenerateDocumentController extends Controller
      * 
      * Permission: Only authenticated users can access this endpoint.
      * this endpoint generates a random DNI (Documento Nacional de Identidad) number, which is a unique identifier used in Spain for individuals. The generated DNI consists of 8 digits followed by a letter, and it is commonly used for identification purposes in various administrative and legal processes.
+     * The "result" query parameter allows the user to specify how many DNI numbers to generate, with a default value of 1 and a maximum limit of 20. The generated DNI numbers are returned as a JSON array in the response.
      * 
      * @authenticated
+     * @queryParam result integer The number of DNI numbers to generate. Default: 1. Min: 1. Max: 20.
+     * 
      * @response 200 {
-     *   "dni": "12345678A"
+     *  ["12345678A", "87654321B"]
      * }
      * @response 401 {
      *   "message": "Unauthenticated."
@@ -34,13 +37,19 @@ class GenerateDocumentController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function generateDni(): JsonResponse
+    public function generateDni(Request $request): JsonResponse
     {
-        // Generate a random DNI
-        $dni = GenerateDocument::generateRandomDni();
-
+        $result = (int) $request->query('result', 1);
+        // Validate the result parameter (minimum 1, maximum 20)
+        if ($result < 1 || $result > 20) {
+            return response()->json(['message' => 'The result parameter must be between 1 and 20.'], 400);
+        }
+        $arrDnis = [];
+        for ($i = 0; $i < $result; $i++) {
+            $arrDnis[] = GenerateDocument::generateRandomDni();
+        }
         // Return the generated DNI as a JSON response
-        return response()->json(['dni' => $dni], 200);
+        return response()->json($arrDnis, 200);
     }
 
     /**

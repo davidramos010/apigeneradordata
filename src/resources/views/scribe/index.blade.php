@@ -141,7 +141,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: April 14, 2026</li>
+        <li>Last updated: April 15, 2026</li>
     </ul>
 </div>
 
@@ -778,7 +778,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </p>
 
 <p>Permission: Only authenticated users can access this endpoint.
-this endpoint generates a random DNI (Documento Nacional de Identidad) number, which is a unique identifier used in Spain for individuals. The generated DNI consists of 8 digits followed by a letter, and it is commonly used for identification purposes in various administrative and legal processes.</p>
+this endpoint generates a random DNI (Documento Nacional de Identidad) number, which is a unique identifier used in Spain for individuals. The generated DNI consists of 8 digits followed by a letter, and it is commonly used for identification purposes in various administrative and legal processes.
+The &quot;result&quot; query parameter allows the user to specify how many DNI numbers to generate, with a default value of 1 and a maximum limit of 20. The generated DNI numbers are returned as a JSON array in the response.</p>
 
 <span id="example-requests-GETapi-generate-dni">
 <blockquote>Example request:</blockquote>
@@ -786,7 +787,7 @@ this endpoint generates a random DNI (Documento Nacional de Identidad) number, w
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8001/api/generate-dni" \
+    --get "http://localhost:8001/api/generate-dni?result=17" \
     --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -796,6 +797,12 @@ this endpoint generates a random DNI (Documento Nacional de Identidad) number, w
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8001/api/generate-dni"
 );
+
+const params = {
+    "result": "17",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer {YOUR_AUTH_KEY}",
@@ -817,7 +824,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;dni&quot;: &quot;12345678A&quot;
+ [&quot;12345678A&quot;, &quot;87654321B&quot;]
 }</code>
  </pre>
             <blockquote>
@@ -919,7 +926,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        </form>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>result</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="result"                data-endpoint="GETapi-generate-dni"
+               value="17"
+               data-component="query">
+    <br>
+<p>The number of DNI numbers to generate. Default: 1. Min: 1. Max: 20. Example: <code>17</code></p>
+            </div>
+                </form>
 
                     <h2 id="2-document-generation-GETapi-generate-cif">Generate random CIF numbers.</h2>
 
