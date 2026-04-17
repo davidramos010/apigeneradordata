@@ -97,50 +97,56 @@ class GenerateDocumentController extends Controller
     }
 
 
-    /** 
-     * Generate a random CIF number by type.
-     * 
+    /**
+     * Generate random CIF numbers by type.
+     *
      * Permission: Only authenticated users can access this endpoint.
-     * this endpoint generates a random CIF (Código de Identificación Fiscal) number based on the
-     * provided type. The type parameter determines the specific format of the CIF number, which can vary based on the type of entity it represents (e.g., company, individual, etc.). The generated CIF number is returned as a JSON response.
-     * 
-     * Sociedades Mercantiles y de Capital
-     * A: Sociedades Anónimas (S.A.).
-     * B: Sociedades de Responsabilidad Limitada (S.L. o S.R.L.).
-     * C: Sociedades Colectivas.
-     * D: Sociedades Comanditarias.
-     * 
-     * Entidades Sociales, Civiles y Sin Personalidad Jurídica
-     * E: Comunidades de bienes, herencias yacentes y otras entidades sin personalidad jurídica.
-     * F: Sociedades Cooperativas.
-     * G: Asociaciones y Fundaciones.
-     * H: Comunidades de propietarios en régimen de propiedad horizontal.
-     * J: Sociedades Civiles (con o sin personalidad jurídica).
-     * U: Uniones Temporales de Empresas (UTE).
-     * V: Otros tipos de entidades no definidos en el resto de claves.
-     * 
-     * Administración y Entidades Públicas
-     * P: Corporaciones Locales (Ayuntamientos, Diputaciones).
-     * Q: Organismos públicos.
-     * S: Órganos de la Administración del Estado y de las Comunidades Autónomas.
-     * 
-     * Entidades Religiosas y Extranjeras
-     * R: Congregaciones e instituciones religiosas.
-     * N: Entidades extranjeras (empresas internacionales que operan en España pero no tienen domicilio social aquí).
-     * W: Establecimientos permanentes de entidades no residentes en España.
-     * 
-     * Nota Adicional (Personas Físicas Especiales):
-     * Aunque el CIF tradicionalmente aplicaba a empresas, dentro del sistema actual del NIF existen tres letras adicionales reservadas para personas físicas que se encuentran en situaciones especiales (no tienen DNI * ni NIE):
-     * 
-     * K: Personas físicas españolas, menores de 14 años, residentes en España sin DNI.
-     * L: Personas físicas españolas, no residentes en España y sin DNI.
-     * M: Personas físicas extranjeras que carecen de NIE.
+     * This endpoint generates one or more random CIF (Código de Identificación Fiscal) numbers
+     * filtered by entity type. The "type" parameter determines the category of the CIF, and
+     * "result" controls how many are generated (default: 1, min: 1, max: 20).
+     *
+     * **Sociedades Mercantiles y de Capital**
+     * - `A`: Sociedades Anónimas (S.A.).
+     * - `B`: Sociedades de Responsabilidad Limitada (S.L. o S.R.L.).
+     * - `C`: Sociedades Colectivas.
+     * - `D`: Sociedades Comanditarias.
+     *
+     * **Entidades Sociales, Civiles y Sin Personalidad Jurídica**
+     * - `E`: Comunidades de bienes, herencias yacentes y otras entidades sin personalidad jurídica.
+     * - `F`: Sociedades Cooperativas.
+     * - `G`: Asociaciones y Fundaciones.
+     * - `H`: Comunidades de propietarios en régimen de propiedad horizontal.
+     * - `J`: Sociedades Civiles (con o sin personalidad jurídica).
+     * - `U`: Uniones Temporales de Empresas (UTE).
+     * - `V`: Otros tipos de entidades no definidos en el resto de claves.
+     *
+     * **Administración y Entidades Públicas**
+     * - `P`: Corporaciones Locales (Ayuntamientos, Diputaciones).
+     * - `Q`: Organismos públicos.
+     * - `S`: Órganos de la Administración del Estado y de las Comunidades Autónomas.
+     *
+     * **Entidades Religiosas y Extranjeras**
+     * - `R`: Congregaciones e instituciones religiosas.
+     * - `N`: Entidades extranjeras (empresas internacionales que operan en España sin domicilio social aquí).
+     * - `W`: Establecimientos permanentes de entidades no residentes en España.
+     *
+     * **Personas Físicas Especiales (sin DNI ni NIE)**
+     * - `K`: Personas físicas españolas menores de 14 años, residentes en España sin DNI.
+     * - `L`: Personas físicas españolas no residentes en España y sin DNI.
+     * - `M`: Personas físicas extranjeras que carecen de NIE.
      *
      * @authenticated
-     * 
-     * @param string $strType The type of CIF to generate (e.g., 'A' for companies, 'B' for individuals, etc.)
+     * @queryParam result integer The number of CIFs to generate. Default: 1. Min: 1. Max: 20. Example: 3
+     * @queryParam type string The entity type of the CIF to generate. Valid values: A, B, C, D, E, F, G, H, J, K, L, M, N, P, Q, R, S, U, V, W. Default: A. Example: B
+     *
      * @response 200 {
-     *   "cif": "A12345678"
+     *   ["B12345678", "B87654321", "B11223344"]
+     * }
+     * @response 400 scenario="Invalid result" {
+     *   "message": "The result parameter must be between 1 and 20."
+     * }
+     * @response 400 scenario="Invalid type" {
+     *   "message": "Invalid type parameter. Valid types are: A, B, C, D, E, F, G, H, J, K, L, M, N, P, Q, R, S, U, V, W."
      * }
      * @response 401 {
      *   "message": "Unauthenticated."
@@ -149,13 +155,33 @@ class GenerateDocumentController extends Controller
      *   "message": "Internal Server Error"
      * }
      */
-    public function generateCifByType(string $strType): JsonResponse
+    public function generateCifByType(Request $request): JsonResponse
     {
-        // Generate a random DNI
-        $cif = GenerateDocument::generateRandomCifByType($strType);
+        $result = (int) $request->query('result', 1);
+        $strType = strtoupper(trim($request->query('type', 'A')));
 
-        // Return the generated DNI as a JSON response
-        return response()->json(['cif' => $cif], 200);
+        $validTypes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'U', 'V', 'W'];
+
+        // Validate the result parameter (minimum 1, maximum 20)
+        if ($result < 1 || $result > 20) {
+            return response()->json(['message' => 'The result parameter must be between 1 and 20.'], 400);
+        }
+
+        // Validate the type parameter
+        if (!in_array($strType, $validTypes)) {
+            return response()->json([
+                'message' => 'Invalid type parameter. Valid types are: ' . implode(', ', $validTypes) . '.'
+            ], 400);
+        }
+
+        // Generate a random CIF by type
+        $cifs = [];
+        for ($i = 0; $i < $result; $i++) {
+            $cifs[] = GenerateDocument::generateRandomCifByType($strType);
+        }
+
+        // Return the generated CIF as a JSON response
+        return response()->json($cifs, 200);
     }
 
     /**

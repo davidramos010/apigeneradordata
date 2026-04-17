@@ -131,7 +131,7 @@ function generateValidSpanishCif(): string
 function generateValidSpanishCifByType(string $strType): string
 {
     $tipo = strtoupper(trim($strType));
-    $letrasValidas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'N', 'P', 'Q', 'R', 'S', 'U', 'V', 'W'];
+    $letrasValidas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'N', 'P', 'Q', 'R', 'S', 'U', 'V', 'W', 'L', 'M' ]; // Incluye letras para personas físicas especiales
 
     if (!in_array($tipo, $letrasValidas)) {
         throw new Exception("Tipo de letra no válido para un CIF. Letras válidas: " . implode(", ", $letrasValidas));
