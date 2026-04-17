@@ -105,8 +105,8 @@
                                                                                 <li class="tocify-item level-2" data-unique="2-document-generation-GETapi-generate-ssn">
                                 <a href="#2-document-generation-GETapi-generate-ssn">Generate a random SSN number.</a>
                             </li>
-                                                                                <li class="tocify-item level-2" data-unique="2-document-generation-GETapi-generate-cif-by-type--strType-">
-                                <a href="#2-document-generation-GETapi-generate-cif-by-type--strType-">Generate a random CIF number by type.</a>
+                                                                                <li class="tocify-item level-2" data-unique="2-document-generation-GETapi-generate-cif-by-type">
+                                <a href="#2-document-generation-GETapi-generate-cif-by-type">Generate random CIF numbers by type.</a>
                             </li>
                                                                         </ul>
                             </ul>
@@ -141,7 +141,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: April 15, 2026</li>
+        <li>Last updated: April 17, 2026</li>
     </ul>
 </div>
 
@@ -1568,49 +1568,59 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="2-document-generation-GETapi-generate-cif-by-type--strType-">Generate a random CIF number by type.</h2>
+                    <h2 id="2-document-generation-GETapi-generate-cif-by-type">Generate random CIF numbers by type.</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
 <p>Permission: Only authenticated users can access this endpoint.
-this endpoint generates a random CIF (Código de Identificación Fiscal) number based on the
-provided type. The type parameter determines the specific format of the CIF number, which can vary based on the type of entity it represents (e.g., company, individual, etc.). The generated CIF number is returned as a JSON response.</p>
-<p>Sociedades Mercantiles y de Capital
-A: Sociedades Anónimas (S.A.).
-B: Sociedades de Responsabilidad Limitada (S.L. o S.R.L.).
-C: Sociedades Colectivas.
-D: Sociedades Comanditarias.</p>
-<p>Entidades Sociales, Civiles y Sin Personalidad Jurídica
-E: Comunidades de bienes, herencias yacentes y otras entidades sin personalidad jurídica.
-F: Sociedades Cooperativas.
-G: Asociaciones y Fundaciones.
-H: Comunidades de propietarios en régimen de propiedad horizontal.
-J: Sociedades Civiles (con o sin personalidad jurídica).
-U: Uniones Temporales de Empresas (UTE).
-V: Otros tipos de entidades no definidos en el resto de claves.</p>
-<p>Administración y Entidades Públicas
-P: Corporaciones Locales (Ayuntamientos, Diputaciones).
-Q: Organismos públicos.
-S: Órganos de la Administración del Estado y de las Comunidades Autónomas.</p>
-<p>Entidades Religiosas y Extranjeras
-R: Congregaciones e instituciones religiosas.
-N: Entidades extranjeras (empresas internacionales que operan en España pero no tienen domicilio social aquí).
-W: Establecimientos permanentes de entidades no residentes en España.</p>
-<p>Nota Adicional (Personas Físicas Especiales):
-Aunque el CIF tradicionalmente aplicaba a empresas, dentro del sistema actual del NIF existen tres letras adicionales reservadas para personas físicas que se encuentran en situaciones especiales (no tienen DNI * ni NIE):</p>
-<p>K: Personas físicas españolas, menores de 14 años, residentes en España sin DNI.
-L: Personas físicas españolas, no residentes en España y sin DNI.
-M: Personas físicas extranjeras que carecen de NIE.</p>
+This endpoint generates one or more random CIF (Código de Identificación Fiscal) numbers
+filtered by entity type. The &quot;type&quot; parameter determines the category of the CIF, and
+&quot;result&quot; controls how many are generated (default: 1, min: 1, max: 20).</p>
+<p><strong>Sociedades Mercantiles y de Capital</strong></p>
+<ul>
+<li><code>A</code>: Sociedades Anónimas (S.A.).</li>
+<li><code>B</code>: Sociedades de Responsabilidad Limitada (S.L. o S.R.L.).</li>
+<li><code>C</code>: Sociedades Colectivas.</li>
+<li><code>D</code>: Sociedades Comanditarias.</li>
+</ul>
+<p><strong>Entidades Sociales, Civiles y Sin Personalidad Jurídica</strong></p>
+<ul>
+<li><code>E</code>: Comunidades de bienes, herencias yacentes y otras entidades sin personalidad jurídica.</li>
+<li><code>F</code>: Sociedades Cooperativas.</li>
+<li><code>G</code>: Asociaciones y Fundaciones.</li>
+<li><code>H</code>: Comunidades de propietarios en régimen de propiedad horizontal.</li>
+<li><code>J</code>: Sociedades Civiles (con o sin personalidad jurídica).</li>
+<li><code>U</code>: Uniones Temporales de Empresas (UTE).</li>
+<li><code>V</code>: Otros tipos de entidades no definidos en el resto de claves.</li>
+</ul>
+<p><strong>Administración y Entidades Públicas</strong></p>
+<ul>
+<li><code>P</code>: Corporaciones Locales (Ayuntamientos, Diputaciones).</li>
+<li><code>Q</code>: Organismos públicos.</li>
+<li><code>S</code>: Órganos de la Administración del Estado y de las Comunidades Autónomas.</li>
+</ul>
+<p><strong>Entidades Religiosas y Extranjeras</strong></p>
+<ul>
+<li><code>R</code>: Congregaciones e instituciones religiosas.</li>
+<li><code>N</code>: Entidades extranjeras (empresas internacionales que operan en España sin domicilio social aquí).</li>
+<li><code>W</code>: Establecimientos permanentes de entidades no residentes en España.</li>
+</ul>
+<p><strong>Personas Físicas Especiales (sin DNI ni NIE)</strong></p>
+<ul>
+<li><code>K</code>: Personas físicas españolas menores de 14 años, residentes en España sin DNI.</li>
+<li><code>L</code>: Personas físicas españolas no residentes en España y sin DNI.</li>
+<li><code>M</code>: Personas físicas extranjeras que carecen de NIE.</li>
+</ul>
 
-<span id="example-requests-GETapi-generate-cif-by-type--strType-">
+<span id="example-requests-GETapi-generate-cif-by-type">
 <blockquote>Example request:</blockquote>
 
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8001/api/generate-cif-by-type/consequatur" \
+    --get "http://localhost:8001/api/generate-cif-by-type?result=3&amp;type=B" \
     --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1618,8 +1628,15 @@ M: Personas físicas extranjeras que carecen de NIE.</p>
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8001/api/generate-cif-by-type/consequatur"
+    "http://localhost:8001/api/generate-cif-by-type"
 );
+
+const params = {
+    "result": "3",
+    "type": "B",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer {YOUR_AUTH_KEY}",
@@ -1634,14 +1651,32 @@ fetch(url, {
 
 </span>
 
-<span id="example-responses-GETapi-generate-cif-by-type--strType-">
+<span id="example-responses-GETapi-generate-cif-by-type">
             <blockquote>
             <p>Example response (200):</p>
         </blockquote>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;cif&quot;: &quot;A12345678&quot;
+  [&quot;B12345678&quot;, &quot;B87654321&quot;, &quot;B11223344&quot;]
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Invalid result):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The result parameter must be between 1 and 20.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Invalid type):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Invalid type parameter. Valid types are: A, B, C, D, E, F, G, H, J, K, L, M, N, P, Q, R, S, U, V, W.&quot;
 }</code>
  </pre>
             <blockquote>
@@ -1663,43 +1698,43 @@ fetch(url, {
 }</code>
  </pre>
     </span>
-<span id="execution-results-GETapi-generate-cif-by-type--strType-" hidden>
+<span id="execution-results-GETapi-generate-cif-by-type" hidden>
     <blockquote>Received response<span
-                id="execution-response-status-GETapi-generate-cif-by-type--strType-"></span>:
+                id="execution-response-status-GETapi-generate-cif-by-type"></span>:
     </blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-generate-cif-by-type--strType-"
+    <pre class="json"><code id="execution-response-content-GETapi-generate-cif-by-type"
       data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
 </span>
-<span id="execution-error-GETapi-generate-cif-by-type--strType-" hidden>
+<span id="execution-error-GETapi-generate-cif-by-type" hidden>
     <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-generate-cif-by-type--strType-">
+    <pre><code id="execution-error-message-GETapi-generate-cif-by-type">
 
 Tip: Check that you&#039;re properly connected to the network.
 If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
 You can check the Dev Tools console for debugging information.</code></pre>
 </span>
-<form id="form-GETapi-generate-cif-by-type--strType-" data-method="GET"
-      data-path="api/generate-cif-by-type/{strType}"
+<form id="form-GETapi-generate-cif-by-type" data-method="GET"
+      data-path="api/generate-cif-by-type"
       data-authed="1"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('GETapi-generate-cif-by-type--strType-', this);">
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-generate-cif-by-type', this);">
     <h3>
         Request&nbsp;&nbsp;&nbsp;
                     <button type="button"
                     style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-GETapi-generate-cif-by-type--strType-"
-                    onclick="tryItOut('GETapi-generate-cif-by-type--strType-');">Try it out ⚡
+                    id="btn-tryout-GETapi-generate-cif-by-type"
+                    onclick="tryItOut('GETapi-generate-cif-by-type');">Try it out ⚡
             </button>
             <button type="button"
                     style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-GETapi-generate-cif-by-type--strType-"
-                    onclick="cancelTryOut('GETapi-generate-cif-by-type--strType-');" hidden>Cancel 🛑
+                    id="btn-canceltryout-GETapi-generate-cif-by-type"
+                    onclick="cancelTryOut('GETapi-generate-cif-by-type');" hidden>Cancel 🛑
             </button>&nbsp;&nbsp;
             <button type="submit"
                     style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-GETapi-generate-cif-by-type--strType-"
+                    id="btn-executetryout-GETapi-generate-cif-by-type"
                     data-initial-text="Send Request 💥"
                     data-loading-text="⏱ Sending..."
                     hidden>Send Request 💥
@@ -1707,7 +1742,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </h3>
             <p>
             <small class="badge badge-green">GET</small>
-            <b><code>api/generate-cif-by-type/{strType}</code></b>
+            <b><code>api/generate-cif-by-type</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                                 <div style="padding-left: 28px; clear: unset;">
@@ -1715,7 +1750,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="GETapi-generate-cif-by-type--strType-"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-generate-cif-by-type"
                value="Bearer {YOUR_AUTH_KEY}"
                data-component="header">
     <br>
@@ -1726,7 +1761,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Content-Type"                data-endpoint="GETapi-generate-cif-by-type--strType-"
+                              name="Content-Type"                data-endpoint="GETapi-generate-cif-by-type"
                value="application/json"
                data-component="header">
     <br>
@@ -1737,25 +1772,36 @@ You can check the Dev Tools console for debugging information.</code></pre>
 &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="Accept"                data-endpoint="GETapi-generate-cif-by-type--strType-"
+                              name="Accept"                data-endpoint="GETapi-generate-cif-by-type"
                value="application/json"
                data-component="header">
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                    <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>strType</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="strType"                data-endpoint="GETapi-generate-cif-by-type--strType-"
-               value="consequatur"
-               data-component="url">
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>result</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="result"                data-endpoint="GETapi-generate-cif-by-type"
+               value="3"
+               data-component="query">
     <br>
-<p>Example: <code>consequatur</code></p>
+<p>The number of CIFs to generate. Default: 1. Min: 1. Max: 20. Example: <code>3</code></p>
             </div>
-                    </form>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="type"                data-endpoint="GETapi-generate-cif-by-type"
+               value="B"
+               data-component="query">
+    <br>
+<p>The entity type of the CIF to generate. Valid values: A, B, C, D, E, F, G, H, J, K, L, M, N, P, Q, R, S, U, V, W. Default: A. Example: <code>B</code></p>
+            </div>
+                </form>
 
                 <h1 id="3-product-management">3. Product Management</h1>
 
