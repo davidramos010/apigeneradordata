@@ -267,6 +267,106 @@ class GenerateDocumentController extends Controller
     }
 
     /**
+     * Validate a document number.
+     *
+     * Permission: Only authenticated users can access this endpoint.
+     * This endpoint validates a document string and returns whether it is valid or not.
+     * If the optional "type" parameter is omitted, the system auto-detects the document type
+     * by trying each known format in order: NIE → CIF → DNI → SSN → PASAPORTE.
+     * If "type" is provided, only that specific format is evaluated.
+     *
+     * Supported types:
+     * - `DNI`: Documento Nacional de Identidad (8 digits + control letter).
+     * - `NIF`: Número de Identificación Fiscal — same algorithm as DNI for individuals.
+     * - `NIE`: Número de Identidad de Extranjero (X/Y/Z + 7 digits + control letter).
+     * - `CIF`: Código de Identificación Fiscal (entity letter + 7 digits + control character).
+     * - `SSN`: Social Security Number — 8 digits or AAA-BB-CCCC format.
+     * - `PASAPORTE`: Spanish passport — 2 or 3 letters followed by 6 digits.
+     *
+     * @authenticated
+     * @queryParam document string required The document string to validate. Example: 12345678Z
+     * @queryParam type string The document type to validate against. If omitted, auto-detection is used. Valid values: DNI, NIF, NIE, CIF, SSN, PASAPORTE. Example: DNI
+     *
+     * @response 200 scenario="Valid document (auto-detect)" {
+     *   "document": "12345678Z",
+     *   "type": "DNI",
+     *   "message": "VALIDO"
+     * }
+     * @response 200 scenario="Invalid document (auto-detect)" {
+     *   "document": "00000000X",
+     *   "type": null,
+     *   "message": "INVALIDO"
+     * }
+     * @response 200 scenario="Valid document (explicit type)" {
+     *   "document": "X1234567L",
+     *   "type": "NIE",
+     *   "message": "VALIDO"
+     * }
+     * @response 200 scenario="Invalid document (explicit type)" {
+     *   "document": "X1234567L",
+     *   "type": "DNI",
+     *   "message": "INVALIDO"
+     * }
+     * @response 400 scenario="Missing document" {
+     *   "message": "The document parameter is required."
+     * }
+     * @response 400 scenario="Invalid type" {
+     *   "message": "Invalid type. Valid types: DNI, NIF, NIE, CIF, SSN, PASAPORTE."
+     * }
+     * @response 401 {
+     *   "message": "Unauthenticated."
+     * }
+     * @response 500 {
+     *   "message": "Internal Server Error"
+     * }
+     */
+    public function validateDocument(Request $request): JsonResponse
+    {
+        $document = strtoupper(trim($request->query('document', '')));
+        $type     = $request->query('type');
+
+        if (empty($document)) {
+            return response()->json(['message' => 'The document parameter is required.'], 400);
+        }
+
+        $validTypes = ['DNI', 'NIF', 'NIE', 'CIF', 'SSN', 'PASAPORTE'];
+
+        if ($type !== null) {
+            $type = strtoupper(trim($type));
+            if (!in_array($type, $validTypes)) {
+                return response()->json([
+                    'message' => 'Invalid type. Valid types: ' . implode(', ', $validTypes) . '.',
+                ], 400);
+            }
+        }
+
+        if ($type === null) {
+            $detectedType = GenerateDocument::identifyDocumentType($document);
+            return response()->json([
+                'document' => $document,
+                'type'     => $detectedType,
+                'message'  => $detectedType !== null ? 'VALIDO' : 'INVALIDO',
+            ], 200);
+        }
+
+        $isValid = match ($type) {
+            'DNI'       => GenerateDocument::validateDni($document),
+            'NIF'       => GenerateDocument::validateNif($document),
+            'NIE'       => GenerateDocument::validateNie($document),
+            'CIF'       => GenerateDocument::validateCif($document),
+            'SSN'       => GenerateDocument::validateSsn($document),
+            'PASAPORTE' => GenerateDocument::validatePasaporte($document),
+            default     => false,
+        };
+
+        return response()->json([
+            'document' => $document,
+            'type'     => $type,
+            'message'  => $isValid ? 'VALIDO' : 'INVALIDO',
+        ], 200);
+    }
+
+    /**
      * Generate random SSN numbers.
      *
      * Permission: Only authenticated users can access this endpoint.

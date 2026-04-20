@@ -42,6 +42,7 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::get('generate-nif', [GenerateDocumentController::class, 'generateNif']);
     Route::get('generate-ssn', [GenerateDocumentController::class, 'generateSsn']);
     Route::get('generate-cif-by-type', [GenerateDocumentController::class, 'generateCifByType']);
+    Route::get('validate-document', [GenerateDocumentController::class, 'validateDocument']);
 });
 
 /**

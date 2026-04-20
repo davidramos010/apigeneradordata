@@ -108,6 +108,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="2-document-generation-GETapi-generate-cif-by-type">
                                 <a href="#2-document-generation-GETapi-generate-cif-by-type">Generate random CIF numbers by type.</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="2-document-generation-GETapi-validate-document">
+                                <a href="#2-document-generation-GETapi-validate-document">Validate a document number.</a>
+                            </li>
                                                                         </ul>
                             </ul>
                     <ul id="tocify-header-3-product-management" class="tocify-header">
@@ -1890,6 +1893,251 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="query">
     <br>
 <p>The entity type of the CIF to generate. Valid values: A, B, C, D, E, F, G, H, J, K, L, M, N, P, Q, R, S, U, V, W. Default: A. Example: <code>B</code></p>
+            </div>
+                </form>
+
+                    <h2 id="2-document-generation-GETapi-validate-document">Validate a document number.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permission: Only authenticated users can access this endpoint.
+This endpoint validates a document string and returns whether it is valid or not.
+If the optional &quot;type&quot; parameter is omitted, the system auto-detects the document type
+by trying each known format in order: NIE → CIF → DNI → SSN → PASAPORTE.
+If &quot;type&quot; is provided, only that specific format is evaluated.</p>
+<p>Supported types:</p>
+<ul>
+<li><code>DNI</code>: Documento Nacional de Identidad (8 digits + control letter).</li>
+<li><code>NIF</code>: Número de Identificación Fiscal — same algorithm as DNI for individuals.</li>
+<li><code>NIE</code>: Número de Identidad de Extranjero (X/Y/Z + 7 digits + control letter).</li>
+<li><code>CIF</code>: Código de Identificación Fiscal (entity letter + 7 digits + control character).</li>
+<li><code>SSN</code>: Social Security Number — 8 digits or AAA-BB-CCCC format.</li>
+<li><code>PASAPORTE</code>: Spanish passport — 2 or 3 letters followed by 6 digits.</li>
+</ul>
+
+<span id="example-requests-GETapi-validate-document">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8001/api/validate-document?document=12345678Z&amp;type=DNI" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8001/api/validate-document"
+);
+
+const params = {
+    "document": "12345678Z",
+    "type": "DNI",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-validate-document">
+            <blockquote>
+            <p>Example response (200, Valid document (auto-detect)):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;document&quot;: &quot;12345678Z&quot;,
+    &quot;type&quot;: &quot;DNI&quot;,
+    &quot;message&quot;: &quot;VALIDO&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, Invalid document (auto-detect)):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;document&quot;: &quot;00000000X&quot;,
+    &quot;type&quot;: null,
+    &quot;message&quot;: &quot;INVALIDO&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, Valid document (explicit type)):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;document&quot;: &quot;X1234567L&quot;,
+    &quot;type&quot;: &quot;NIE&quot;,
+    &quot;message&quot;: &quot;VALIDO&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, Invalid document (explicit type)):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;document&quot;: &quot;X1234567L&quot;,
+    &quot;type&quot;: &quot;DNI&quot;,
+    &quot;message&quot;: &quot;INVALIDO&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Missing document):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The document parameter is required.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Invalid type):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Invalid type. Valid types: DNI, NIF, NIE, CIF, SSN, PASAPORTE.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Internal Server Error&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-validate-document" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-validate-document"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-validate-document"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-validate-document" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-validate-document">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-validate-document" data-method="GET"
+      data-path="api/validate-document"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-validate-document', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-validate-document"
+                    onclick="tryItOut('GETapi-validate-document');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-validate-document"
+                    onclick="cancelTryOut('GETapi-validate-document');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-validate-document"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/validate-document</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-validate-document"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-validate-document"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-validate-document"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>document</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="document"                data-endpoint="GETapi-validate-document"
+               value="12345678Z"
+               data-component="query">
+    <br>
+<p>The document string to validate. Example: <code>12345678Z</code></p>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="type"                data-endpoint="GETapi-validate-document"
+               value="DNI"
+               data-component="query">
+    <br>
+<p>The document type to validate against. If omitted, auto-detection is used. Valid values: DNI, NIF, NIE, CIF, SSN, PASAPORTE. Example: <code>DNI</code></p>
             </div>
                 </form>
 

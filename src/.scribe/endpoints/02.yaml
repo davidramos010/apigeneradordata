@@ -553,3 +553,152 @@ endpoints:
     method: null
     route: null
     custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/validate-document
+    metadata:
+      groupName: '2. Document Generation'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Validate a document number.'
+      description: |-
+        Permission: Only authenticated users can access this endpoint.
+        This endpoint validates a document string and returns whether it is valid or not.
+        If the optional "type" parameter is omitted, the system auto-detects the document type
+        by trying each known format in order: NIE → CIF → DNI → SSN → PASAPORTE.
+        If "type" is provided, only that specific format is evaluated.
+
+        Supported types:
+        - `DNI`: Documento Nacional de Identidad (8 digits + control letter).
+        - `NIF`: Número de Identificación Fiscal — same algorithm as DNI for individuals.
+        - `NIE`: Número de Identidad de Extranjero (X/Y/Z + 7 digits + control letter).
+        - `CIF`: Código de Identificación Fiscal (entity letter + 7 digits + control character).
+        - `SSN`: Social Security Number — 8 digits or AAA-BB-CCCC format.
+        - `PASAPORTE`: Spanish passport — 2 or 3 letters followed by 6 digits.
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      document:
+        name: document
+        description: 'The document string to validate.'
+        required: true
+        example: 12345678Z
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+      type:
+        name: type
+        description: 'The document type to validate against. If omitted, auto-detection is used. Valid values: DNI, NIF, NIE, CIF, SSN, PASAPORTE.'
+        required: false
+        example: DNI
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      document: 12345678Z
+      type: DNI
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+            "document": "12345678Z",
+            "type": "DNI",
+            "message": "VALIDO"
+          }
+        headers: []
+        description: 'Valid document (auto-detect)'
+        custom: []
+      -
+        status: 200
+        content: |-
+          {
+            "document": "00000000X",
+            "type": null,
+            "message": "INVALIDO"
+          }
+        headers: []
+        description: 'Invalid document (auto-detect)'
+        custom: []
+      -
+        status: 200
+        content: |-
+          {
+            "document": "X1234567L",
+            "type": "NIE",
+            "message": "VALIDO"
+          }
+        headers: []
+        description: 'Valid document (explicit type)'
+        custom: []
+      -
+        status: 200
+        content: |-
+          {
+            "document": "X1234567L",
+            "type": "DNI",
+            "message": "INVALIDO"
+          }
+        headers: []
+        description: 'Invalid document (explicit type)'
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "message": "The document parameter is required."
+          }
+        headers: []
+        description: 'Missing document'
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "message": "Invalid type. Valid types: DNI, NIF, NIE, CIF, SSN, PASAPORTE."
+          }
+        headers: []
+        description: 'Invalid type'
+        custom: []
+      -
+        status: 401
+        content: |-
+          {
+            "message": "Unauthenticated."
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 500
+        content: |-
+          {
+            "message": "Internal Server Error"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 3V5EgbkvZcDPa166h8fd4ae'
+    controller: null
+    method: null
+    route: null
+    custom: []
