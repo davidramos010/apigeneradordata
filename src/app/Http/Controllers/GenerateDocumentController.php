@@ -185,14 +185,22 @@ class GenerateDocumentController extends Controller
     }
 
     /**
-     * Generate a random NIE number.
-     * 
+     * Generate random NIE numbers.
+     *
      * Permission: Only authenticated users can access this endpoint.
-     * this endpoint generates a random NIE (Número de Identidad de Extranjero) number, which is a unique identifier used in Spain for foreign residents. The generated NIE consists of a letter
-     * 
+     * This endpoint generates one or more random NIE (Número de Identidad de Extranjero) numbers,
+     * which are unique identifiers used in Spain for foreign residents. Each NIE consists of an
+     * initial letter (X, Y or Z), seven digits and a control letter (e.g. X1234567A).
+     * The "result" parameter controls how many NIEs are generated (default: 1, min: 1, max: 20).
+     *
      * @authenticated
+     * @queryParam result integer The number of NIEs to generate. Default: 1. Min: 1. Max: 20. Example: 2
+     *
      * @response 200 {
-     *   "nie": "X1234567A"
+     *   ["X1234567A", "Y7654321B"]
+     * }
+     * @response 400 {
+     *   "message": "The result parameter must be between 1 and 20."
      * }
      * @response 401 {
      *   "message": "Unauthenticated."
@@ -200,26 +208,40 @@ class GenerateDocumentController extends Controller
      * @response 500 {
      *   "message": "Internal Server Error"
      * }
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function generateNie(): JsonResponse
+    public function generateNie(Request $request): JsonResponse
     {
-        // Generate a random DNI
-        $nie = GenerateDocument::generateRandomNie();
+        $result = (int) $request->query('result', 1);
 
-        // Return the generated DNI as a JSON response
-        return response()->json(['nie' => $nie], 200);
+        if ($result < 1 || $result > 20) {
+            return response()->json(['message' => 'The result parameter must be between 1 and 20.'], 400);
+        }
+
+        $nies = [];
+        for ($i = 0; $i < $result; $i++) {
+            $nies[] = GenerateDocument::generateRandomNie();
+        }
+
+        return response()->json($nies, 200);
     }
 
     /**
-     * generate a random NIF number.
+     * Generate random NIF numbers.
      *
      * Permission: Only authenticated users can access this endpoint.
-     * this endpoint generates a random NIF (Número de Identificación Fiscal) number, which is a unique identifier used in Spain for tax purposes. The generated NIF consists of 8 digits
-     * 
+     * This endpoint generates one or more random NIF (Número de Identificación Fiscal) numbers,
+     * which are unique identifiers used in Spain for tax purposes. Each NIF consists of 8 digits
+     * followed by a control letter (e.g. 12345678A).
+     * The "result" parameter controls how many NIFs are generated (default: 1, min: 1, max: 20).
+     *
      * @authenticated
+     * @queryParam result integer The number of NIFs to generate. Default: 1. Min: 1. Max: 20. Example: 2
+     *
      * @response 200 {
-     *   "nif": "12345678A"
+     *   ["12345678A", "87654321B"]
+     * }
+     * @response 400 {
+     *   "message": "The result parameter must be between 1 and 20."
      * }
      * @response 401 {
      *   "message": "Unauthenticated."
@@ -227,26 +249,40 @@ class GenerateDocumentController extends Controller
      * @response 500 {
      *   "message": "Internal Server Error"
      * }
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function generateNif(): JsonResponse
+    public function generateNif(Request $request): JsonResponse
     {
-        // Generate a random DNI
-        $nif = GenerateDocument::generateRandomNif();
+        $result = (int) $request->query('result', 1);
 
-        // Return the generated DNI as a JSON response
-        return response()->json(['nif' => $nif], 200);
+        if ($result < 1 || $result > 20) {
+            return response()->json(['message' => 'The result parameter must be between 1 and 20.'], 400);
+        }
+
+        $nifs = [];
+        for ($i = 0; $i < $result; $i++) {
+            $nifs[] = GenerateDocument::generateRandomNif();
+        }
+
+        return response()->json($nifs, 200);
     }
 
     /**
-     * Generate a random SSN number.
+     * Generate random SSN numbers.
      *
      * Permission: Only authenticated users can access this endpoint.
-     * this endpoint generates a random SSN (Social Security Number) number, which is a unique identifier used in the United States for social security purposes. The generated SSN consists of 9
-     * 
+     * This endpoint generates one or more random SSN (Social Security Number) numbers,
+     * which are unique identifiers used in the United States for social security purposes.
+     * Each SSN follows the format AAA-BB-CCCC (e.g. 123-45-6789).
+     * The "result" parameter controls how many SSNs are generated (default: 1, min: 1, max: 20).
+     *
      * @authenticated
+     * @queryParam result integer The number of SSNs to generate. Default: 1. Min: 1. Max: 20. Example: 2
+     *
      * @response 200 {
-     *   "ssn": "123-45-6789"
+     *   ["123-45-6789", "987-65-4321"]
+     * }
+     * @response 400 {
+     *   "message": "The result parameter must be between 1 and 20."
      * }
      * @response 401 {
      *   "message": "Unauthenticated."
@@ -254,14 +290,20 @@ class GenerateDocumentController extends Controller
      * @response 500 {
      *   "message": "Internal Server Error"
      * }
-     * @return \Illuminate\Http\JsonResponse
      */
-    public function generateSsn(): JsonResponse
+    public function generateSsn(Request $request): JsonResponse
     {
-        // Generate a random DNI
-        $ssn = GenerateDocument::generateRandomSsn();
+        $result = (int) $request->query('result', 1);
 
-        // Return the generated DNI as a JSON response
-        return response()->json(['ssn' => $ssn], 200);
+        if ($result < 1 || $result > 20) {
+            return response()->json(['message' => 'The result parameter must be between 1 and 20.'], 400);
+        }
+
+        $ssns = [];
+        for ($i = 0; $i < $result; $i++) {
+            $ssns[] = GenerateDocument::generateRandomSsn();
+        }
+
+        return response()->json($ssns, 200);
     }
 }

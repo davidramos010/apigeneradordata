@@ -171,10 +171,13 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Generate a random NIE number.'
+      title: 'Generate random NIE numbers.'
       description: |-
         Permission: Only authenticated users can access this endpoint.
-        this endpoint generates a random NIE (Número de Identidad de Extranjero) number, which is a unique identifier used in Spain for foreign residents. The generated NIE consists of a letter
+        This endpoint generates one or more random NIE (Número de Identidad de Extranjero) numbers,
+        which are unique identifiers used in Spain for foreign residents. Each NIE consists of an
+        initial letter (X, Y or Z), seven digits and a control letter (e.g. X1234567A).
+        The "result" parameter controls how many NIEs are generated (default: 1, min: 1, max: 20).
       authenticated: true
       custom: []
     headers:
@@ -183,8 +186,19 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      result:
+        name: result
+        description: 'The number of NIEs to generate. Default: 1. Min: 1. Max: 20.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      result: 2
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -193,7 +207,16 @@ endpoints:
         status: 200
         content: |-
           {
-            "nie": "X1234567A"
+            ["X1234567A", "Y7654321B"]
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "message": "The result parameter must be between 1 and 20."
           }
         headers: []
         description: ''
@@ -234,10 +257,13 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'generate a random NIF number.'
+      title: 'Generate random NIF numbers.'
       description: |-
         Permission: Only authenticated users can access this endpoint.
-        this endpoint generates a random NIF (Número de Identificación Fiscal) number, which is a unique identifier used in Spain for tax purposes. The generated NIF consists of 8 digits
+        This endpoint generates one or more random NIF (Número de Identificación Fiscal) numbers,
+        which are unique identifiers used in Spain for tax purposes. Each NIF consists of 8 digits
+        followed by a control letter (e.g. 12345678A).
+        The "result" parameter controls how many NIFs are generated (default: 1, min: 1, max: 20).
       authenticated: true
       custom: []
     headers:
@@ -246,8 +272,19 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      result:
+        name: result
+        description: 'The number of NIFs to generate. Default: 1. Min: 1. Max: 20.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      result: 2
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -256,7 +293,16 @@ endpoints:
         status: 200
         content: |-
           {
-            "nif": "12345678A"
+            ["12345678A", "87654321B"]
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "message": "The result parameter must be between 1 and 20."
           }
         headers: []
         description: ''
@@ -297,10 +343,13 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: 'Generate a random SSN number.'
+      title: 'Generate random SSN numbers.'
       description: |-
         Permission: Only authenticated users can access this endpoint.
-        this endpoint generates a random SSN (Social Security Number) number, which is a unique identifier used in the United States for social security purposes. The generated SSN consists of 9
+        This endpoint generates one or more random SSN (Social Security Number) numbers,
+        which are unique identifiers used in the United States for social security purposes.
+        Each SSN follows the format AAA-BB-CCCC (e.g. 123-45-6789).
+        The "result" parameter controls how many SSNs are generated (default: 1, min: 1, max: 20).
       authenticated: true
       custom: []
     headers:
@@ -309,8 +358,19 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
+    queryParameters:
+      result:
+        name: result
+        description: 'The number of SSNs to generate. Default: 1. Min: 1. Max: 20.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      result: 2
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -319,7 +379,16 @@ endpoints:
         status: 200
         content: |-
           {
-            "ssn": "123-45-6789"
+            ["123-45-6789", "987-65-4321"]
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+            "message": "The result parameter must be between 1 and 20."
           }
         headers: []
         description: ''

@@ -97,13 +97,13 @@
                                 <a href="#2-document-generation-GETapi-generate-cif">Generate random CIF numbers.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="2-document-generation-GETapi-generate-nie">
-                                <a href="#2-document-generation-GETapi-generate-nie">Generate a random NIE number.</a>
+                                <a href="#2-document-generation-GETapi-generate-nie">Generate random NIE numbers.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="2-document-generation-GETapi-generate-nif">
-                                <a href="#2-document-generation-GETapi-generate-nif">generate a random NIF number.</a>
+                                <a href="#2-document-generation-GETapi-generate-nif">Generate random NIF numbers.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="2-document-generation-GETapi-generate-ssn">
-                                <a href="#2-document-generation-GETapi-generate-ssn">Generate a random SSN number.</a>
+                                <a href="#2-document-generation-GETapi-generate-ssn">Generate random SSN numbers.</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="2-document-generation-GETapi-generate-cif-by-type">
                                 <a href="#2-document-generation-GETapi-generate-cif-by-type">Generate random CIF numbers by type.</a>
@@ -141,7 +141,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: April 17, 2026</li>
+        <li>Last updated: April 20, 2026</li>
     </ul>
 </div>
 
@@ -1118,14 +1118,17 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                 </form>
 
-                    <h2 id="2-document-generation-GETapi-generate-nie">Generate a random NIE number.</h2>
+                    <h2 id="2-document-generation-GETapi-generate-nie">Generate random NIE numbers.</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
 <p>Permission: Only authenticated users can access this endpoint.
-this endpoint generates a random NIE (Número de Identidad de Extranjero) number, which is a unique identifier used in Spain for foreign residents. The generated NIE consists of a letter</p>
+This endpoint generates one or more random NIE (Número de Identidad de Extranjero) numbers,
+which are unique identifiers used in Spain for foreign residents. Each NIE consists of an
+initial letter (X, Y or Z), seven digits and a control letter (e.g. X1234567A).
+The &quot;result&quot; parameter controls how many NIEs are generated (default: 1, min: 1, max: 20).</p>
 
 <span id="example-requests-GETapi-generate-nie">
 <blockquote>Example request:</blockquote>
@@ -1133,7 +1136,7 @@ this endpoint generates a random NIE (Número de Identidad de Extranjero) number
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8001/api/generate-nie" \
+    --get "http://localhost:8001/api/generate-nie?result=2" \
     --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1143,6 +1146,12 @@ this endpoint generates a random NIE (Número de Identidad de Extranjero) number
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8001/api/generate-nie"
 );
+
+const params = {
+    "result": "2",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer {YOUR_AUTH_KEY}",
@@ -1164,7 +1173,16 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;nie&quot;: &quot;X1234567A&quot;
+  [&quot;X1234567A&quot;, &quot;Y7654321B&quot;]
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The result parameter must be between 1 and 20.&quot;
 }</code>
  </pre>
             <blockquote>
@@ -1266,16 +1284,31 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        </form>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>result</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="result"                data-endpoint="GETapi-generate-nie"
+               value="2"
+               data-component="query">
+    <br>
+<p>The number of NIEs to generate. Default: 1. Min: 1. Max: 20. Example: <code>2</code></p>
+            </div>
+                </form>
 
-                    <h2 id="2-document-generation-GETapi-generate-nif">generate a random NIF number.</h2>
+                    <h2 id="2-document-generation-GETapi-generate-nif">Generate random NIF numbers.</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
 <p>Permission: Only authenticated users can access this endpoint.
-this endpoint generates a random NIF (Número de Identificación Fiscal) number, which is a unique identifier used in Spain for tax purposes. The generated NIF consists of 8 digits</p>
+This endpoint generates one or more random NIF (Número de Identificación Fiscal) numbers,
+which are unique identifiers used in Spain for tax purposes. Each NIF consists of 8 digits
+followed by a control letter (e.g. 12345678A).
+The &quot;result&quot; parameter controls how many NIFs are generated (default: 1, min: 1, max: 20).</p>
 
 <span id="example-requests-GETapi-generate-nif">
 <blockquote>Example request:</blockquote>
@@ -1283,7 +1316,7 @@ this endpoint generates a random NIF (Número de Identificación Fiscal) number,
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8001/api/generate-nif" \
+    --get "http://localhost:8001/api/generate-nif?result=2" \
     --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1293,6 +1326,12 @@ this endpoint generates a random NIF (Número de Identificación Fiscal) number,
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8001/api/generate-nif"
 );
+
+const params = {
+    "result": "2",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer {YOUR_AUTH_KEY}",
@@ -1314,7 +1353,16 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;nif&quot;: &quot;12345678A&quot;
+  [&quot;12345678A&quot;, &quot;87654321B&quot;]
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The result parameter must be between 1 and 20.&quot;
 }</code>
  </pre>
             <blockquote>
@@ -1416,16 +1464,31 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        </form>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>result</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="result"                data-endpoint="GETapi-generate-nif"
+               value="2"
+               data-component="query">
+    <br>
+<p>The number of NIFs to generate. Default: 1. Min: 1. Max: 20. Example: <code>2</code></p>
+            </div>
+                </form>
 
-                    <h2 id="2-document-generation-GETapi-generate-ssn">Generate a random SSN number.</h2>
+                    <h2 id="2-document-generation-GETapi-generate-ssn">Generate random SSN numbers.</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
 <p>Permission: Only authenticated users can access this endpoint.
-this endpoint generates a random SSN (Social Security Number) number, which is a unique identifier used in the United States for social security purposes. The generated SSN consists of 9</p>
+This endpoint generates one or more random SSN (Social Security Number) numbers,
+which are unique identifiers used in the United States for social security purposes.
+Each SSN follows the format AAA-BB-CCCC (e.g. 123-45-6789).
+The &quot;result&quot; parameter controls how many SSNs are generated (default: 1, min: 1, max: 20).</p>
 
 <span id="example-requests-GETapi-generate-ssn">
 <blockquote>Example request:</blockquote>
@@ -1433,7 +1496,7 @@ this endpoint generates a random SSN (Social Security Number) number, which is a
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost:8001/api/generate-ssn" \
+    --get "http://localhost:8001/api/generate-ssn?result=2" \
     --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
@@ -1443,6 +1506,12 @@ this endpoint generates a random SSN (Social Security Number) number, which is a
     <pre><code class="language-javascript">const url = new URL(
     "http://localhost:8001/api/generate-ssn"
 );
+
+const params = {
+    "result": "2",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
 
 const headers = {
     "Authorization": "Bearer {YOUR_AUTH_KEY}",
@@ -1464,7 +1533,16 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;ssn&quot;: &quot;123-45-6789&quot;
+  [&quot;123-45-6789&quot;, &quot;987-65-4321&quot;]
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;The result parameter must be between 1 and 20.&quot;
 }</code>
  </pre>
             <blockquote>
@@ -1566,7 +1644,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>application/json</code></p>
             </div>
-                        </form>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>result</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="result"                data-endpoint="GETapi-generate-ssn"
+               value="2"
+               data-component="query">
+    <br>
+<p>The number of SSNs to generate. Default: 1. Min: 1. Max: 20. Example: <code>2</code></p>
+            </div>
+                </form>
 
                     <h2 id="2-document-generation-GETapi-generate-cif-by-type">Generate random CIF numbers by type.</h2>
 
