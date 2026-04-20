@@ -8,9 +8,32 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+/**
+ * AuthController handles user authentication and authorization. It allows users to register, login, logout, and retrieve their user information. The controller uses JWT for token-based authentication, ensuring secure access to protected routes. Each method in this controller is designed to handle specific authentication-related tasks, such as validating user credentials, generating tokens, and managing user sessions. The endpoints for authentication return appropriate JSON responses based on the success or failure of the operations.
+ * @group 1. Authentication
+ */
 class AuthController extends Controller
 {
-    //
+    /**
+     * Register a new user.
+     *
+     * @bodyParam name string required The name of the user. Example: John Doe
+     * @bodyParam email string required The email of the user. Example: user@example.com
+     * @bodyParam password string required The password of the user. Example: secret
+     * @bodyParam password_confirmation string required The password confirmation. Example: secret
+     * @bodyParam role string required The role of the user. Example: user
+     * @response 200 {
+     *   "message": "User registered successfully"
+     * }
+     * @response 422 {
+     *   "message": "Validation error",
+     *   "errors": {            
+     *    "email": [
+     *     "The email has already been taken."
+     *   ]
+     * }     * }
+     * 
+     */
     public function register(Request $request)
     {
         try {
@@ -108,7 +131,7 @@ class AuthController extends Controller
 
     /**
      * get all information of the user
-     *
+     * @authenticated
      * @return void
      */
     public function getUser()
@@ -128,6 +151,7 @@ class AuthController extends Controller
 
     /**
      * Get the authenticated user.
+     * @authenticated
      */
     public function user()
     {

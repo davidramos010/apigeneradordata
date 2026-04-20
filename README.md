@@ -28,23 +28,68 @@ The project is organized as follows:
 
 ## Docker Configuration
 
-The project includes a `Dockerfile` and `docker-compose.yml` file to facilitate local development with PHP 8, MySQL, and Xdebug. 
+The project uses **Docker Compose v2** (native plugin) with PHP 8.2, MySQL 8.0, and Xdebug.
+
+**Prerequisites:**
+- Docker Engine with Compose v2 (integrated plugin)
+- Git
+- Ports 8001 (API) and 3307 (MySQL) available
 
 ## Setup Instructions
 
 1. Clone the repository:
-   ```
+   ```bash
    git clone <repository-url>
    cd apigeneradordata
    ```
 
-2. Build and run the Docker containers:
+2. Run the setup script (generates encryption keys and JWT secret):
+   ```bash
+   bash setup.sh
    ```
-   docker-compose up -d
+   
+   **Manual alternative** (if you prefer not to use the script):
+   - Copy `src/.env.example` to `src/.env`
+   - Replace `GENERATE_ME_WITH_SETUP_SCRIPT` values with generated keys:
+     ```bash
+     # In src/.env:
+     APP_KEY=base64:$(openssl rand -base64 32)
+     JWT_SECRET=$(openssl rand -base64 32)
+     ```
+
+3. Build and start services:
+   ```bash
+   docker compose up -d --build
    ```
 
-3. Access the application:
-   Open your browser and navigate to `http://localhost`.
+4. Run database migrations:
+   ```bash
+   docker compose exec app php artisan migrate
+   ```
+
+5. Verify services:
+   ```bash
+   docker compose ps
+   ```
+
+6. Access the application:
+   - **API**: http://localhost:8001
+   - **MySQL Client**: `mysql -h 127.0.0.1 -P 3307 -u laravel -psecret`
+
+7. View logs:
+   ```bash
+   docker compose logs -f app
+   ```
+
+8. Stop services:
+   ```bash
+   docker compose stop
+   ```
+
+9. Remove containers and volumes:
+   ```bash
+   docker compose down -v
+   ```
 
 ## Usage
 
