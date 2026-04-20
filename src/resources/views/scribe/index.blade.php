@@ -135,6 +135,19 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-4-financial-data" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="4-financial-data">
+                    <a href="#4-financial-data">4. Financial Data</a>
+                </li>
+                                    <ul id="tocify-subheader-4-financial-data" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="4-financial-data-GETapi-generate-iban">
+                                <a href="#4-financial-data-GETapi-generate-iban">Generate a valid Spanish IBAN.</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="4-financial-data-GETapi-validate-iban">
+                                <a href="#4-financial-data-GETapi-validate-iban">Validate a Spanish IBAN.</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
             </div>
 
     <ul class="toc-footer" id="toc-footer">
@@ -2987,6 +3000,374 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>The ID of the product. Example: <code>1</code></p>
             </div>
                     </form>
+
+                <h1 id="4-financial-data">4. Financial Data</h1>
+
+    <p>Endpoints for generating and validating Spanish financial and banking data.</p>
+
+                                <h2 id="4-financial-data-GETapi-generate-iban">Generate a valid Spanish IBAN.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permission: Only authenticated users can access this endpoint.
+Generates a random but structurally valid Spanish IBAN following ISO 13616 and the CCC standard.
+The BBAN (20 digits) is composed of: bank code (4) + branch code (4) + CCC control digits (2) + account number (10).
+The 2 IBAN check digits are computed via MOD-97. The CCC control digits are computed via MOD-11.</p>
+
+<span id="example-requests-GETapi-generate-iban">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8001/api/generate-iban" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8001/api/generate-iban"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-generate-iban">
+            <blockquote>
+            <p>Example response (200, IBAN generado correctamente):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;iban&quot;: &quot;ES7921000813610123456789&quot;,
+    &quot;formatted&quot;: &quot;ES79 2100 0813 6101 2345 6789&quot;,
+    &quot;components&quot;: {
+        &quot;country&quot;: &quot;ES&quot;,
+        &quot;check_digits&quot;: &quot;79&quot;,
+        &quot;bank_code&quot;: &quot;2100&quot;,
+        &quot;branch_code&quot;: &quot;0813&quot;,
+        &quot;control_digits&quot;: &quot;61&quot;,
+        &quot;account_number&quot;: &quot;0123456789&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Internal Server Error&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-generate-iban" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-generate-iban"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-generate-iban"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-generate-iban" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-generate-iban">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-generate-iban" data-method="GET"
+      data-path="api/generate-iban"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-generate-iban', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-generate-iban"
+                    onclick="tryItOut('GETapi-generate-iban');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-generate-iban"
+                    onclick="cancelTryOut('GETapi-generate-iban');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-generate-iban"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/generate-iban</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-generate-iban"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-generate-iban"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-generate-iban"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="4-financial-data-GETapi-validate-iban">Validate a Spanish IBAN.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permission: Only authenticated users can access this endpoint.
+Validates a Spanish IBAN string checking: correct length (24 chars), ES country prefix,
+MOD-97 checksum (ISO 13616), and CCC internal control digits (MOD-11).
+Spaces in the input are ignored, allowing both compact and formatted IBANs.</p>
+
+<span id="example-requests-GETapi-validate-iban">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8001/api/validate-iban?iban=ES79+2100+0813+6101+2345+6789" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8001/api/validate-iban"
+);
+
+const params = {
+    "iban": "ES79 2100 0813 6101 2345 6789",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-validate-iban">
+            <blockquote>
+            <p>Example response (200, IBAN válido):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;iban&quot;: &quot;ES7921000813610123456789&quot;,
+    &quot;formatted&quot;: &quot;ES79 2100 0813 6101 2345 6789&quot;,
+    &quot;valid&quot;: true,
+    &quot;message&quot;: &quot;VALIDO&quot;,
+    &quot;components&quot;: {
+        &quot;country&quot;: &quot;ES&quot;,
+        &quot;check_digits&quot;: &quot;79&quot;,
+        &quot;bank_code&quot;: &quot;2100&quot;,
+        &quot;branch_code&quot;: &quot;0813&quot;,
+        &quot;control_digits&quot;: &quot;61&quot;,
+        &quot;account_number&quot;: &quot;0123456789&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, IBAN inválido):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;iban&quot;: &quot;ES0000000000000000000000&quot;,
+    &quot;formatted&quot;: null,
+    &quot;valid&quot;: false,
+    &quot;message&quot;: &quot;Los d&iacute;gitos de control IBAN no son v&aacute;lidos (falla MOD-97).&quot;,
+    &quot;components&quot;: null
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;El par&aacute;metro &#039;iban&#039; es requerido.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Internal Server Error&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-validate-iban" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-validate-iban"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-validate-iban"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-validate-iban" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-validate-iban">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-validate-iban" data-method="GET"
+      data-path="api/validate-iban"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-validate-iban', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-validate-iban"
+                    onclick="tryItOut('GETapi-validate-iban');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-validate-iban"
+                    onclick="cancelTryOut('GETapi-validate-iban');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-validate-iban"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/validate-iban</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-validate-iban"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-validate-iban"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-validate-iban"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>iban</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="iban"                data-endpoint="GETapi-validate-iban"
+               value="ES79 2100 0813 6101 2345 6789"
+               data-component="query">
+    <br>
+<p>The IBAN to validate. Spaces are ignored. Example: <code>ES79 2100 0813 6101 2345 6789</code></p>
+            </div>
+                </form>
 
             
 
