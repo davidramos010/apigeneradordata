@@ -127,3 +127,112 @@ function _ibanResult(string $input, bool $valid, string $message): array
         'components' => null,
     ];
 }
+
+/**
+ * Generates a valid Spanish CCC (Código Cuenta Cliente).
+ *
+ * Format: BBBB-SSSS-DC-AAAAAAAAAA (20 digits)
+ * - BBBB: bank code (4 digits)
+ * - SSSS: branch code (4 digits)
+ * - DC:   control digits MOD-11 (2 digits)
+ * - AAAAAAAAAA: account number (10 digits)
+ *
+ * @return array{ccc: string, formatted: string, components: array}
+ */
+function generateSpanishCuentaCorriente(): array
+{
+    $bankCode   = str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
+    $branchCode = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+    $account    = str_pad(rand(0, 9999999999), 10, '0', STR_PAD_LEFT);
+
+    $dc1 = ibanCccControlDigit('0' . $bankCode . $branchCode, [4, 8, 5, 10, 9, 7, 3, 6, 1]);
+    $dc2 = ibanCccControlDigit($account, [1, 2, 4, 8, 5, 10, 9, 7, 3, 6]);
+    $controlDigits = $dc1 . $dc2;
+
+    return [
+        'ccc'        => $bankCode . $branchCode . $controlDigits . $account,
+        'formatted'  => "$bankCode-$branchCode-$controlDigits-$account",
+        'components' => [
+            'bank_code'      => $bankCode,
+            'branch_code'    => $branchCode,
+            'control_digits' => $controlDigits,
+            'account_number' => $account,
+        ],
+    ];
+}
+
+/**
+ * Generates a valid credit card number using the Luhn algorithm.
+ *
+ * Supported types: VISA (16 digits), MASTERCARD (16 digits), AMEX (15 digits).
+ * If $type is null, a random type is chosen.
+ *
+ * @throws \InvalidArgumentException for unsupported card types.
+ * @return array{card_number: string, formatted: string, type: string, expiry: string, cvv: string, components: array}
+ */
+function generateCreditCard(?string $type = null): array
+{
+    $validTypes = ['VISA', 'MASTERCARD', 'AMEX'];
+    $type = $type ? strtoupper(trim($type)) : $validTypes[array_rand($validTypes)];
+
+    if (!in_array($type, $validTypes)) {
+        throw new \InvalidArgumentException(
+            "Tipo no válido. Tipos soportados: " . implode(', ', $validTypes) . "."
+        );
+    }
+
+    [$prefix, $length, $cvvLength] = match ($type) {
+        'VISA'       => ['4'  . str_pad(rand(0, 999),  3, '0', STR_PAD_LEFT), 16, 3],
+        'MASTERCARD' => [rand(51, 55) . str_pad(rand(0, 99), 2, '0', STR_PAD_LEFT), 16, 3],
+        'AMEX'       => [(rand(0, 1) ? '34' : '37') . str_pad(rand(0, 99), 2, '0', STR_PAD_LEFT), 15, 4],
+    };
+
+    $middle = '';
+    for ($i = 0; $i < $length - strlen($prefix) - 1; $i++) {
+        $middle .= rand(0, 9);
+    }
+
+    $cardNumber = $prefix . $middle . luhnCheckDigit($prefix . $middle);
+
+    $formatted = $type === 'AMEX'
+        ? substr($cardNumber, 0, 4) . ' ' . substr($cardNumber, 4, 6) . ' ' . substr($cardNumber, 10, 5)
+        : implode(' ', str_split($cardNumber, 4));
+
+    $expiry = str_pad(rand(1, 12), 2, '0', STR_PAD_LEFT) . '/' . (intval(date('y')) + rand(1, 5));
+    $cvv    = str_pad(rand(0, (int) str_repeat('9', $cvvLength)), $cvvLength, '0', STR_PAD_LEFT);
+
+    return [
+        'card_number' => $cardNumber,
+        'formatted'   => $formatted,
+        'type'        => $type,
+        'expiry'      => $expiry,
+        'cvv'         => $cvv,
+        'components'  => [
+            'prefix' => $prefix,
+            'length' => $length,
+            'network' => match ($type) {
+                'VISA'       => 'Visa International',
+                'MASTERCARD' => 'Mastercard Worldwide',
+                'AMEX'       => 'American Express',
+            },
+        ],
+    ];
+}
+
+function luhnCheckDigit(string $number): int
+{
+    $sum      = 0;
+    $isDouble = true;
+
+    for ($i = strlen($number) - 1; $i >= 0; $i--) {
+        $digit = intval($number[$i]);
+        if ($isDouble) {
+            $digit *= 2;
+            if ($digit > 9) $digit -= 9;
+        }
+        $sum += $digit;
+        $isDouble = !$isDouble;
+    }
+
+    return (10 - ($sum % 10)) % 10;
+}

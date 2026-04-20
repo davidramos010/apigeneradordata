@@ -15,4 +15,14 @@ class GenerateFinancial
     {
         return validateSpanishIban($iban);
     }
+
+    public static function generateRandomCuenta(): array
+    {
+        return generateSpanishCuentaCorriente();
+    }
+
+    public static function generateRandomTarjeta(?string $type = null): array
+    {
+        return generateCreditCard($type);
+    }
 }

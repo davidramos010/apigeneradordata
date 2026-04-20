@@ -146,6 +146,12 @@
                                                                                 <li class="tocify-item level-2" data-unique="4-financial-data-GETapi-validate-iban">
                                 <a href="#4-financial-data-GETapi-validate-iban">Validate a Spanish IBAN.</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="4-financial-data-GETapi-generate-cuenta">
+                                <a href="#4-financial-data-GETapi-generate-cuenta">Generate a valid Spanish bank account number (CCC).</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="4-financial-data-GETapi-generate-tarjeta">
+                                <a href="#4-financial-data-GETapi-generate-tarjeta">Generate a valid credit card number.</a>
+                            </li>
                                                                         </ul>
                             </ul>
             </div>
@@ -3172,8 +3178,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <small class="badge badge-darkred">requires authentication</small>
 </p>
 
-<p>Permission: Only authenticated users can access this endpoint.
-Validates a Spanish IBAN string checking: correct length (24 chars), ES country prefix,
+<p>Permission: Only authenticated users can access this endpoint.</p>
+<p>Validates a Spanish IBAN string checking: correct length (24 chars), ES country prefix,
 MOD-97 checksum (ISO 13616), and CCC internal control digits (MOD-11).
 Spaces in the input are ignored, allowing both compact and formatted IBANs.</p>
 
@@ -3366,6 +3372,370 @@ You can check the Dev Tools console for debugging information.</code></pre>
                data-component="query">
     <br>
 <p>The IBAN to validate. Spaces are ignored. Example: <code>ES79 2100 0813 6101 2345 6789</code></p>
+            </div>
+                </form>
+
+                    <h2 id="4-financial-data-GETapi-generate-cuenta">Generate a valid Spanish bank account number (CCC).</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permission: Only authenticated users can access this endpoint.
+Generates a random CCC (Código Cuenta Cliente) with valid MOD-11 control digits.
+The CCC is the BBAN part of the Spanish IBAN: bank(4) + branch(4) + control(2) + account(10).</p>
+
+<span id="example-requests-GETapi-generate-cuenta">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8001/api/generate-cuenta" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8001/api/generate-cuenta"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-generate-cuenta">
+            <blockquote>
+            <p>Example response (200, Cuenta generada correctamente):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;ccc&quot;: &quot;21000813610123456789&quot;,
+    &quot;formatted&quot;: &quot;2100-0813-61-0123456789&quot;,
+    &quot;components&quot;: {
+        &quot;bank_code&quot;: &quot;2100&quot;,
+        &quot;branch_code&quot;: &quot;0813&quot;,
+        &quot;control_digits&quot;: &quot;61&quot;,
+        &quot;account_number&quot;: &quot;0123456789&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Internal Server Error&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-generate-cuenta" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-generate-cuenta"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-generate-cuenta"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-generate-cuenta" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-generate-cuenta">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-generate-cuenta" data-method="GET"
+      data-path="api/generate-cuenta"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-generate-cuenta', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-generate-cuenta"
+                    onclick="tryItOut('GETapi-generate-cuenta');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-generate-cuenta"
+                    onclick="cancelTryOut('GETapi-generate-cuenta');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-generate-cuenta"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/generate-cuenta</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-generate-cuenta"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-generate-cuenta"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-generate-cuenta"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="4-financial-data-GETapi-generate-tarjeta">Generate a valid credit card number.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permission: Only authenticated users can access this endpoint.
+Generates a random credit card number using the Luhn algorithm.
+Supported types: VISA (16 digits, prefix 4xxx), MASTERCARD (16 digits, prefix 51-55xx),
+AMEX (15 digits, prefix 34xx or 37xx). If no type is provided, one is chosen at random.</p>
+
+<span id="example-requests-GETapi-generate-tarjeta">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8001/api/generate-tarjeta?type=VISA" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8001/api/generate-tarjeta"
+);
+
+const params = {
+    "type": "VISA",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-generate-tarjeta">
+            <blockquote>
+            <p>Example response (200, Tarjeta VISA generada):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;card_number&quot;: &quot;4532123456789010&quot;,
+    &quot;formatted&quot;: &quot;4532 1234 5678 9010&quot;,
+    &quot;type&quot;: &quot;VISA&quot;,
+    &quot;expiry&quot;: &quot;08/28&quot;,
+    &quot;cvv&quot;: &quot;123&quot;,
+    &quot;components&quot;: {
+        &quot;prefix&quot;: &quot;4532&quot;,
+        &quot;length&quot;: 16,
+        &quot;network&quot;: &quot;Visa International&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, Tarjeta AMEX generada):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;card_number&quot;: &quot;378282246310005&quot;,
+    &quot;formatted&quot;: &quot;3782 822463 10005&quot;,
+    &quot;type&quot;: &quot;AMEX&quot;,
+    &quot;expiry&quot;: &quot;11/27&quot;,
+    &quot;cvv&quot;: &quot;1234&quot;,
+    &quot;components&quot;: {
+        &quot;prefix&quot;: &quot;3782&quot;,
+        &quot;length&quot;: 15,
+        &quot;network&quot;: &quot;American Express&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Tipo no v&aacute;lido. Tipos soportados: VISA, MASTERCARD, AMEX.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Internal Server Error&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-generate-tarjeta" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-generate-tarjeta"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-generate-tarjeta"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-generate-tarjeta" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-generate-tarjeta">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-generate-tarjeta" data-method="GET"
+      data-path="api/generate-tarjeta"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-generate-tarjeta', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-generate-tarjeta"
+                    onclick="tryItOut('GETapi-generate-tarjeta');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-generate-tarjeta"
+                    onclick="cancelTryOut('GETapi-generate-tarjeta');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-generate-tarjeta"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/generate-tarjeta</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="GETapi-generate-tarjeta"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-generate-tarjeta"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-generate-tarjeta"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>type</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="type"                data-endpoint="GETapi-generate-tarjeta"
+               value="VISA"
+               data-component="query">
+    <br>
+<p>optional Tipo de tarjeta. Valores válidos: VISA, MASTERCARD, AMEX. Si se omite, se elige aleatoriamente. Example: <code>VISA</code></p>
             </div>
                 </form>
 

@@ -92,4 +92,82 @@ class GenerateFinancialController extends Controller
 
         return response()->json(GenerateFinancial::validateIban($iban), 200);
     }
+
+    /**
+     * Generate a valid Spanish bank account number (CCC).
+     *
+     * Permission: Only authenticated users can access this endpoint.
+     * Generates a random CCC (Código Cuenta Cliente) with valid MOD-11 control digits.
+     * The CCC is the BBAN part of the Spanish IBAN: bank(4) + branch(4) + control(2) + account(10).
+     *
+     * @authenticated
+     *
+     * @response 200 scenario="Cuenta generada correctamente" {
+     *   "ccc": "21000813610123456789",
+     *   "formatted": "2100-0813-61-0123456789",
+     *   "components": {
+     *     "bank_code": "2100",
+     *     "branch_code": "0813",
+     *     "control_digits": "61",
+     *     "account_number": "0123456789"
+     *   }
+     * }
+     * @response 401 {"message": "Unauthenticated."}
+     * @response 500 {"message": "Internal Server Error"}
+     */
+    public function generateCuenta(): JsonResponse
+    {
+        return response()->json(GenerateFinancial::generateRandomCuenta(), 200);
+    }
+
+    /**
+     * Generate a valid credit card number.
+     *
+     * Permission: Only authenticated users can access this endpoint.
+     * Generates a random credit card number using the Luhn algorithm.
+     * Supported types: VISA (16 digits, prefix 4xxx), MASTERCARD (16 digits, prefix 51-55xx),
+     * AMEX (15 digits, prefix 34xx or 37xx). If no type is provided, one is chosen at random.
+     *
+     * @authenticated
+     *
+     * @queryParam type string optional Tipo de tarjeta. Valores válidos: VISA, MASTERCARD, AMEX. Si se omite, se elige aleatoriamente. Example: VISA
+     *
+     * @response 200 scenario="Tarjeta VISA generada" {
+     *   "card_number": "4532123456789010",
+     *   "formatted": "4532 1234 5678 9010",
+     *   "type": "VISA",
+     *   "expiry": "08/28",
+     *   "cvv": "123",
+     *   "components": {
+     *     "prefix": "4532",
+     *     "length": 16,
+     *     "network": "Visa International"
+     *   }
+     * }
+     * @response 200 scenario="Tarjeta AMEX generada" {
+     *   "card_number": "378282246310005",
+     *   "formatted": "3782 822463 10005",
+     *   "type": "AMEX",
+     *   "expiry": "11/27",
+     *   "cvv": "1234",
+     *   "components": {
+     *     "prefix": "3782",
+     *     "length": 15,
+     *     "network": "American Express"
+     *   }
+     * }
+     * @response 400 {"message": "Tipo no válido. Tipos soportados: VISA, MASTERCARD, AMEX."}
+     * @response 401 {"message": "Unauthenticated."}
+     * @response 500 {"message": "Internal Server Error"}
+     */
+    public function generateTarjeta(Request $request): JsonResponse
+    {
+        $type = $request->query('type');
+
+        try {
+            return response()->json(GenerateFinancial::generateRandomTarjeta($type), 200);
+        } catch (\InvalidArgumentException $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
 }

@@ -45,8 +45,10 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::get('generate-cif-by-type', [GenerateDocumentController::class, 'generateCifByType']);
     Route::get('validate-document', [GenerateDocumentController::class, 'validateDocument']);
 
-    Route::get('generate-iban', [GenerateFinancialController::class, 'generateIban']);
-    Route::get('validate-iban',  [GenerateFinancialController::class, 'validateIban']);
+    Route::get('generate-iban',    [GenerateFinancialController::class, 'generateIban']);
+    Route::get('validate-iban',    [GenerateFinancialController::class, 'validateIban']);
+    Route::get('generate-cuenta',  [GenerateFinancialController::class, 'generateCuenta']);
+    Route::get('generate-tarjeta', [GenerateFinancialController::class, 'generateTarjeta']);
 });
 
 /**
