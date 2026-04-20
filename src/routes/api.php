@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GenerateDocumentController;
+use App\Http\Controllers\GenerateFinancialController;
 
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsUserAuth;
@@ -43,6 +44,11 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::get('generate-ssn', [GenerateDocumentController::class, 'generateSsn']);
     Route::get('generate-cif-by-type', [GenerateDocumentController::class, 'generateCifByType']);
     Route::get('validate-document', [GenerateDocumentController::class, 'validateDocument']);
+
+    Route::get('generate-iban',    [GenerateFinancialController::class, 'generateIban']);
+    Route::get('validate-iban',    [GenerateFinancialController::class, 'validateIban']);
+    Route::get('generate-cuenta',  [GenerateFinancialController::class, 'generateCuenta']);
+    Route::get('generate-tarjeta', [GenerateFinancialController::class, 'generateTarjeta']);
 });
 
 /**
