@@ -154,6 +154,19 @@
                             </li>
                                                                         </ul>
                             </ul>
+                    <ul id="tocify-header-5-cups" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="5-cups">
+                    <a href="#5-cups">5. CUPS</a>
+                </li>
+                                    <ul id="tocify-subheader-5-cups" class="tocify-subheader">
+                                                    <li class="tocify-item level-2" data-unique="5-cups-POSTapi-cups-generate">
+                                <a href="#5-cups-POSTapi-cups-generate">Generate one or more valid Spanish CUPS codes.</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="5-cups-POSTapi-cups-validate">
+                                <a href="#5-cups-POSTapi-cups-validate">Validate the format and control letters of a Spanish CUPS code.</a>
+                            </li>
+                                                                        </ul>
+                            </ul>
             </div>
 
     <ul class="toc-footer" id="toc-footer">
@@ -163,7 +176,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: April 20, 2026</li>
+        <li>Last updated: April 27, 2026</li>
     </ul>
 </div>
 
@@ -3738,6 +3751,500 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>optional Tipo de tarjeta. Valores válidos: VISA, MASTERCARD, AMEX. Si se omite, se elige aleatoriamente. Example: <code>VISA</code></p>
             </div>
                 </form>
+
+                <h1 id="5-cups">5. CUPS</h1>
+
+    
+
+                                <h2 id="5-cups-POSTapi-cups-generate">Generate one or more valid Spanish CUPS codes.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permission: Only authenticated users can access this endpoint.
+Generates random CUPS (Código Universal del Punto de Suministro) codes for electricity
+or gas supply points in Spain. The control letters are calculated using the official
+algorithm (mod 529 over the 16 central digits).</p>
+
+<span id="example-requests-POSTapi-cups-generate">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8001/api/cups/generate" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"tipo\": \"electricidad\",
+    \"distribuidora\": \"0021\",
+    \"cantidad\": 3,
+    \"incluirSufijo\": false
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8001/api/cups/generate"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "tipo": "electricidad",
+    "distribuidora": "0021",
+    "cantidad": 3,
+    "incluirSufijo": false
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-cups-generate">
+            <blockquote>
+            <p>Example response (200, Electricidad sin sufijo):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;tipo&quot;: &quot;electricidad&quot;,
+    &quot;cups&quot;: [
+        &quot;ES0021123456789012AB&quot;,
+        &quot;ES0031987654321098CD&quot;
+    ]
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, Gas con sufijo):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;tipo&quot;: &quot;gas&quot;,
+    &quot;cups&quot;: [
+        &quot;ES0067123456789012AB1F&quot;
+    ]
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Tipo inválido):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;El par&aacute;metro &#039;tipo&#039; es requerido y debe ser &#039;electricidad&#039; o &#039;gas&#039;.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Cantidad fuera de rango):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;El par&aacute;metro &#039;cantidad&#039; debe estar entre 1 y 100.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Distribuidora inválida):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;El par&aacute;metro &#039;distribuidora&#039; debe ser un c&oacute;digo de exactamente 4 d&iacute;gitos.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Internal Server Error&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-cups-generate" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-cups-generate"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-cups-generate"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-cups-generate" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-cups-generate">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-cups-generate" data-method="POST"
+      data-path="api/cups/generate"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-cups-generate', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-cups-generate"
+                    onclick="tryItOut('POSTapi-cups-generate');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-cups-generate"
+                    onclick="cancelTryOut('POSTapi-cups-generate');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-cups-generate"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/cups/generate</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-cups-generate"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-cups-generate"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-cups-generate"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>tipo</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="tipo"                data-endpoint="POSTapi-cups-generate"
+               value="electricidad"
+               data-component="body">
+    <br>
+<p>The type of supply. Must be 'electricidad' or 'gas'. Example: <code>electricidad</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>distribuidora</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="distribuidora"                data-endpoint="POSTapi-cups-generate"
+               value="0021"
+               data-component="body">
+    <br>
+<p>optional 4-digit distributor code. If omitted, a valid one is chosen automatically. Example: <code>0021</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>cantidad</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="cantidad"                data-endpoint="POSTapi-cups-generate"
+               value="3"
+               data-component="body">
+    <br>
+<p>optional Number of CUPS to generate. Default: 1. Min: 1. Max: 100. Example: <code>3</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>incluirSufijo</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+<i>optional</i> &nbsp;
+                <label data-endpoint="POSTapi-cups-generate" style="display: none">
+            <input type="radio" name="incluirSufijo"
+                   value="true"
+                   data-endpoint="POSTapi-cups-generate"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-cups-generate" style="display: none">
+            <input type="radio" name="incluirSufijo"
+                   value="false"
+                   data-endpoint="POSTapi-cups-generate"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>optional If true, appends a frontier digit and type letter (22-char CUPS). Default: false. Example: <code>false</code></p>
+        </div>
+        </form>
+
+                    <h2 id="5-cups-POSTapi-cups-validate">Validate the format and control letters of a Spanish CUPS code.</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Permission: Only authenticated users can access this endpoint.
+Validates a CUPS string checking: length (20 or 22 chars), ES prefix, numeric digits,
+valid control letters, and correct control letter calculation using the official mod 529 algorithm.
+For 22-char CUPS also validates the frontier digit and type letter.</p>
+
+<span id="example-requests-POSTapi-cups-validate">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8001/api/cups/validate" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"cups\": \"ES0021000000000001RK\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8001/api/cups/validate"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "cups": "ES0021000000000001RK"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-cups-validate">
+            <blockquote>
+            <p>Example response (200, CUPS válido (20 chars)):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;valido&quot;: true,
+    &quot;cups&quot;: &quot;ES0021000000000001RK&quot;,
+    &quot;detalles&quot;: {
+        &quot;pais&quot;: &quot;ES&quot;,
+        &quot;distribuidora&quot;: &quot;0021&quot;,
+        &quot;suministro&quot;: &quot;000000000001&quot;,
+        &quot;controlEsperado&quot;: &quot;RK&quot;,
+        &quot;controlRecibido&quot;: &quot;RK&quot;,
+        &quot;sufijoFrontera&quot;: null,
+        &quot;tipoFrontera&quot;: null
+    },
+    &quot;errores&quot;: []
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, CUPS válido (22 chars)):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;valido&quot;: true,
+    &quot;cups&quot;: &quot;ES0021000000000001RK1F&quot;,
+    &quot;detalles&quot;: {
+        &quot;pais&quot;: &quot;ES&quot;,
+        &quot;distribuidora&quot;: &quot;0021&quot;,
+        &quot;suministro&quot;: &quot;000000000001&quot;,
+        &quot;controlEsperado&quot;: &quot;RK&quot;,
+        &quot;controlRecibido&quot;: &quot;RK&quot;,
+        &quot;sufijoFrontera&quot;: &quot;1&quot;,
+        &quot;tipoFrontera&quot;: &quot;F&quot;
+    },
+    &quot;errores&quot;: []
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, CUPS inválido):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;valido&quot;: false,
+    &quot;errores&quot;: [
+        &quot;Los d&iacute;gitos de control no coinciden&quot;
+    ]
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, Parámetro cups ausente):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;El par&aacute;metro &#039;cups&#039; es requerido.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Internal Server Error&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-cups-validate" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-cups-validate"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-cups-validate"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-cups-validate" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-cups-validate">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-cups-validate" data-method="POST"
+      data-path="api/cups/validate"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-cups-validate', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-cups-validate"
+                    onclick="tryItOut('POSTapi-cups-validate');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-cups-validate"
+                    onclick="cancelTryOut('POSTapi-cups-validate');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-cups-validate"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/cups/validate</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-cups-validate"
+               value="Bearer {YOUR_AUTH_KEY}"
+               data-component="header">
+    <br>
+<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-cups-validate"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-cups-validate"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>cups</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="cups"                data-endpoint="POSTapi-cups-validate"
+               value="ES0021000000000001RK"
+               data-component="body">
+    <br>
+<p>The CUPS string to validate. Example: <code>ES0021000000000001RK</code></p>
+        </div>
+        </form>
 
             
 
