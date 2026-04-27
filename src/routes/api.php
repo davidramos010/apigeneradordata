@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GenerateDocumentController;
 use App\Http\Controllers\GenerateFinancialController;
+use App\Http\Controllers\GenerateCupsController;
 
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsUserAuth;
@@ -49,6 +50,11 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::get('validate-iban',    [GenerateFinancialController::class, 'validateIban']);
     Route::get('generate-cuenta',  [GenerateFinancialController::class, 'generateCuenta']);
     Route::get('generate-tarjeta', [GenerateFinancialController::class, 'generateTarjeta']);
+
+    Route::prefix('cups')->group(function () {
+        Route::post('generate', [GenerateCupsController::class, 'generate']);
+        Route::post('validate', [GenerateCupsController::class, 'validate']);
+    });
 });
 
 /**

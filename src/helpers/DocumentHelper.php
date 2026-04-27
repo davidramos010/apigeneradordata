@@ -52,9 +52,9 @@ function generateValidSpanishNie(): string
 
 /**
  * **CIF**:
-   - Starts with a letter indicating the type of entity.
-   - The control character is calculated based on the sum of digits at odd and even positions.
-   - The control character can be a digit or a letter depending on the prefix.
+ *  - Starts with a letter indicating the type of entity.
+ *  - The control character is calculated based on the sum of digits at odd and even positions.
+ *  - The control character can be a digit or a letter depending on the prefix.
  *
  * @return string
  */
