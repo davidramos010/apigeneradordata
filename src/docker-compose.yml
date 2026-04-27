@@ -1,0 +1,61 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_apigeneradordata
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel_db
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Europe/Madrid
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data_apigeneradordata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - apigeneradordata_net
+
+  app:
+    build: .
+    container_name: app_apigeneradordata
+    restart: unless-stopped
+    environment:
+      APP_ENV: local
+      APP_KEY: base64:45htVXDiQi9Dg6MtTd+MiUlVoko01W0jyFtApyI2gNs=
+      APP_DEBUG: true
+      APP_URL: http://localhost:8001
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: laravel_db
+      DB_USERNAME: laravel
+      DB_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Europe/Madrid
+      XDEBUG_MODE: debug
+      XDEBUG_CONFIG: "client_host=host.docker.internal client_port=9003"
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - ./:/var/www/html:cached
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8001:8000"  # Host 8001 expone Laravel server en 8000
+    networks:
+      - apigeneradordata_net
+    command: ["/usr/local/bin/docker-entrypoint.sh"]
+
+volumes:
+  db_data_apigeneradordata:
+
+networks:
+  apigeneradordata_net:
+    driver: bridge
