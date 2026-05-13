@@ -8,6 +8,8 @@
 <p>
 <?php $__env->startComponent('scribe::components.badges.auth', ['authenticated' => $endpoint->isAuthed()]); ?>
 <?php echo $__env->renderComponent(); ?>
+<?php $__env->startComponent('scribe::components.badges.deprecated', ['deprecated' => $endpoint->metadata->deprecated]); ?>
+<?php echo $__env->renderComponent(); ?>
 </p>
 
 <?php echo Parsedown::instance()->text($endpoint->metadata->description ?: ''); ?>
@@ -41,7 +43,7 @@
 
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> </code></pre></details> <?php endif; ?>
         <pre>
-<?php if(is_string($response->content) && Str::startsWith($response->content, "<<binary>>")): ?>
+<?php if($response->isBinary()): ?>
 <code><?php echo u::trans("scribe::endpoint.responses.binary"); ?> - <?php echo e(htmlentities(str_replace("<<binary>>", "", $response->content))); ?></code>
 <?php elseif($response->status == 204): ?>
 <code><?php echo u::trans("scribe::endpoint.responses.empty"); ?></code>
@@ -107,15 +109,16 @@
         <?php $__currentLoopData = $endpoint->headers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $name => $example): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php
                 $htmlOptions = [];
-                if ($endpoint->isAuthed() && $metadata['auth']['location'] == 'header' && $metadata['auth']['name'] == $name) {
-                  $htmlOptions = [ 'class' => 'auth-value', ];
-                  }
+            if ($endpoint->isAuthed() && 'header' == $metadata['auth']['location'] && $metadata['auth']['name'] == $name) {
+                $htmlOptions = ['class' => 'auth-value'];
+            }
             ?>
             <div style="padding-left: 28px; clear: unset;">
                 <?php $__env->startComponent('scribe::components.field-details', [
                   'name' => $name,
                   'type' => null,
                   'required' => true,
+                  'deprecated' => false,
                   'description' => null,
                   'example' => $example,
                   'endpointId' => $endpoint->endpointId(),
@@ -135,6 +138,7 @@
                   'name' => $parameter->name,
                   'type' => $parameter->type ?? 'string',
                   'required' => $parameter->required,
+                  'deprecated' => $parameter->deprecated,
                   'description' => $parameter->description,
                   'example' => $parameter->example ?? '',
                   'enumValues' => $parameter->enumValues,
@@ -151,15 +155,16 @@
         <?php $__currentLoopData = $endpoint->queryParameters; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attribute => $parameter): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php
                 $htmlOptions = [];
-                if ($endpoint->isAuthed() && $metadata['auth']['location'] == 'query' && $metadata['auth']['name'] == $attribute) {
-                    $htmlOptions = [ 'class' => 'auth-value', ];
-                }
-                ?>
+            if ($endpoint->isAuthed() && 'query' == $metadata['auth']['location'] && $metadata['auth']['name'] == $attribute) {
+                $htmlOptions = ['class' => 'auth-value'];
+            }
+            ?>
             <div style="padding-left: 28px; clear: unset;">
                 <?php $__env->startComponent('scribe::components.field-details', [
                   'name' => $parameter->name,
                   'type' => $parameter->type,
                   'required' => $parameter->required,
+                  'deprecated' => $parameter->deprecated,
                   'description' => $parameter->description,
                   'example' => $parameter->example ?? '',
                   'enumValues' => $parameter->enumValues,

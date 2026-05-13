@@ -4,6 +4,7 @@
 <b style="line-height: 2;"><code><?php echo e($name); ?></code></b>&nbsp;&nbsp;
 <?php if($type): ?><small><?php echo e($type); ?></small><?php endif; ?>&nbsp;
 <?php if($isInput && !$required): ?><i>optional</i><?php endif; ?> &nbsp;
+<?php if($isInput && $deprecated): ?><i>deprecated</i><?php endif; ?> &nbsp;
 <?php if($isInput && empty($hasChildren)): ?>
     <?php
         $isList = Str::endsWith($type, '[]');
