@@ -8,7 +8,7 @@ return [
         'output_path' => 'public/docs',
     ],
     'auth' => [
-        'enabled' => false,
+        'enabled' => true,
         'default' => true,
         'in' => AuthIn::BEARER->value,
         'name' => 'Authorization',

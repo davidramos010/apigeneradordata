@@ -25,6 +25,15 @@ tags:
   -
     name: Endpoints
     description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by logging in.'
+security:
+  -
+    default: []
 paths:
   /api/login:
     post:
@@ -58,12 +67,10 @@ paths:
                   type: string
                   description: 'The email of the user.'
                   example: user@example.com
-                  nullable: false
                 password:
                   type: string
                   description: 'The password of the user.'
                   example: secret
-                  nullable: false
               required:
                 - email
                 - password
@@ -106,27 +113,22 @@ paths:
                   type: string
                   description: 'The name of the user.'
                   example: 'John Doe'
-                  nullable: false
                 email:
                   type: string
                   description: 'The email of the user.'
                   example: user@example.com
-                  nullable: false
                 password:
                   type: string
                   description: 'The password of the user.'
                   example: secret
-                  nullable: false
                 password_confirmation:
                   type: string
                   description: 'The password confirmation.'
                   example: secret
-                  nullable: false
                 role:
                   type: string
                   description: 'The role of the user.'
                   example: user
-                  nullable: false
               required:
                 - name
                 - email
@@ -179,7 +181,6 @@ paths:
             type: integer
             description: 'The number of DNI numbers to generate. Default: 1. Min: 1. Max: 20.'
             example: 17
-            nullable: false
       responses:
         200:
           description: ''
@@ -230,7 +231,6 @@ paths:
             type: integer
             description: 'The number of CIFs to generate. Default: 1. Min: 1. Max: 20.'
             example: 17
-            nullable: false
       responses:
         200:
           description: ''
@@ -293,7 +293,6 @@ paths:
             type: integer
             description: 'The number of NIEs to generate. Default: 1. Min: 1. Max: 20.'
             example: 2
-            nullable: false
       responses:
         200:
           description: ''
@@ -356,7 +355,6 @@ paths:
             type: integer
             description: 'The number of NIFs to generate. Default: 1. Min: 1. Max: 20.'
             example: 2
-            nullable: false
       responses:
         200:
           description: ''
@@ -419,7 +417,6 @@ paths:
             type: integer
             description: 'The number of SSNs to generate. Default: 1. Min: 1. Max: 20.'
             example: 2
-            nullable: false
       responses:
         200:
           description: ''
@@ -482,7 +479,6 @@ paths:
             type: integer
             description: 'The number of CIFs to generate. Default: 1. Min: 1. Max: 20.'
             example: 3
-            nullable: false
         -
           in: query
           name: type
@@ -493,7 +489,6 @@ paths:
             type: string
             description: 'The entity type of the CIF to generate. Valid values: A, B, C, D, E, F, G, H, J, K, L, M, N, P, Q, R, S, U, V, W. Default: A.'
             example: B
-            nullable: false
       responses:
         200:
           description: ''
@@ -568,7 +563,6 @@ paths:
             type: string
             description: 'The document string to validate.'
             example: 12345678Z
-            nullable: false
         -
           in: query
           name: type
@@ -579,7 +573,6 @@ paths:
             type: string
             description: 'The document type to validate against. If omitted, auto-detection is used. Valid values: DNI, NIF, NIE, CIF, SSN, PASAPORTE.'
             example: DNI
-            nullable: false
       responses:
         200:
           description: ''
@@ -618,6 +611,7 @@ paths:
                       type:
                         type: string
                         example: null
+                        nullable: true
                       message:
                         type: string
                         example: INVALIDO
@@ -720,6 +714,22 @@ paths:
                 type: array
                 items:
                   type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: Laptop
+                    price:
+                      type: number
+                      example: 999.99
+                    created_at:
+                      type: string
+                      example: '2024-06-01T12:00:00Z'
+                    updated_at:
+                      type: string
+                      example: '2024-06-01T12:00:00Z'
                 example:
                   -
                     id: 1
@@ -780,12 +790,10 @@ paths:
                   type: string
                   description: 'The name of the product.'
                   example: Laptop
-                  nullable: false
                 price:
                   type: numeric
                   description: 'The price of the product.'
                   example: '999.99'
-                  nullable: false
               required:
                 - name
                 - price
@@ -888,12 +896,10 @@ paths:
                   type: string
                   description: 'The name of the product.'
                   example: Laptop
-                  nullable: false
                 price:
                   type: numeric
                   description: 'The price of the product.'
                   example: '999.99'
-                  nullable: false
     delete:
       summary: 'Delete a specific product by ID.'
       operationId: deleteASpecificProductByID
@@ -1028,7 +1034,6 @@ paths:
             type: string
             description: 'The IBAN to validate. Spaces are ignored.'
             example: 'ES79 2100 0813 6101 2345 6789'
-            nullable: false
       responses:
         200:
           description: ''
@@ -1101,6 +1106,7 @@ paths:
                       formatted:
                         type: string
                         example: null
+                        nullable: true
                       valid:
                         type: boolean
                         example: false
@@ -1110,6 +1116,7 @@ paths:
                       components:
                         type: string
                         example: null
+                        nullable: true
         400:
           description: ''
           content:
@@ -1233,7 +1240,6 @@ paths:
             type: string
             description: 'optional Tipo de tarjeta. Valores válidos: VISA, MASTERCARD, AMEX. Si se omite, se elige aleatoriamente.'
             example: VISA
-            nullable: false
       responses:
         200:
           description: ''
@@ -1480,22 +1486,18 @@ paths:
                   type: string
                   description: "The type of supply. Must be 'electricidad' or 'gas'."
                   example: electricidad
-                  nullable: false
                 distribuidora:
                   type: string
                   description: 'optional 4-digit distributor code. If omitted, a valid one is chosen automatically.'
                   example: '0021'
-                  nullable: false
                 cantidad:
                   type: integer
                   description: 'optional Number of CUPS to generate. Default: 1. Min: 1. Max: 100.'
                   example: 3
-                  nullable: false
                 incluirSufijo:
                   type: boolean
                   description: 'optional If true, appends a frontier digit and type letter (22-char CUPS). Default: false.'
                   example: false
-                  nullable: false
               required:
                 - tipo
   /api/cups/validate:
@@ -1554,9 +1556,11 @@ paths:
                           sufijoFrontera:
                             type: string
                             example: null
+                            nullable: true
                           tipoFrontera:
                             type: string
                             example: null
+                            nullable: true
                       errores:
                         type: array
                         example: []
@@ -1675,7 +1679,6 @@ paths:
                   type: string
                   description: 'The CUPS string to validate.'
                   example: ES0021000000000001RK
-                  nullable: false
               required:
                 - cups
   /sanctum/csrf-cookie:
@@ -1687,6 +1690,11 @@ paths:
       responses:
         204:
           description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: ''
       tags:
         - Endpoints
   /up:
@@ -1702,7 +1710,7 @@ paths:
             text/plain:
               schema:
                 type: string
-                example: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n    <title>Laravel</title>\n\n    <!-- Fonts -->\n    <link rel=\"preconnect\" href=\"https://fonts.bunny.net\">\n    <link href=\"https://fonts.bunny.net/css?family=figtree:400,600&display=swap\" rel=\"stylesheet\" />\n\n    <!-- Styles -->\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n\n    <script>\n        tailwind.config = {\n            theme: {\n                extend: {\n                    fontFamily: {\n                        sans: ['Figtree', 'ui-sans-serif', 'system-ui', 'sans-serif', \"Apple Color Emoji\", \"Segoe UI Emoji\"],\n                    }\n                }\n            }\n        }\n    </script>\n</head>\n<body class=\"antialiased\">\n<div class=\"relative flex justify-center items-center min-h-screen bg-gray-100 selection:bg-red-500 selection:text-white\">\n    <div class=\"w-full sm:w-3/4 xl:w-1/2 mx-auto p-6\">\n        <div class=\"px-6 py-4 bg-white from-gray-700/50 via-transparent rounded-lg shadow-2xl shadow-gray-500/20 flex items-center focus:outline focus:outline-2 focus:outline-red-500\">\n            <div class=\"relative flex h-3 w-3 group \">\n                <span class=\"animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 group-[.status-down]:bg-red-600 opacity-75\"></span>\n                <span class=\"relative inline-flex rounded-full h-3 w-3 bg-green-400 group-[.status-down]:bg-red-600\"></span>\n            </div>\n\n            <div class=\"ml-6\">\n                <h2 class=\"text-xl font-semibold text-gray-900\">Application up</h2>\n\n                <p class=\"mt-2 text-gray-500 dark:text-gray-400 text-sm leading-relaxed\">\n                    HTTP request received.\n\n                                            Response rendered in 799ms.\n                                    </p>\n            </div>\n        </div>\n    </div>\n</div>\n</body>\n</html>\n"
+                example: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n    <title>Laravel</title>\n\n    <!-- Fonts -->\n    <link rel=\"preconnect\" href=\"https://fonts.bunny.net\">\n    <link href=\"https://fonts.bunny.net/css?family=figtree:400,600&display=swap\" rel=\"stylesheet\" />\n\n    <!-- Styles -->\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n\n    <script>\n        tailwind.config = {\n            theme: {\n                extend: {\n                    fontFamily: {\n                        sans: ['Figtree', 'ui-sans-serif', 'system-ui', 'sans-serif', \"Apple Color Emoji\", \"Segoe UI Emoji\"],\n                    }\n                }\n            }\n        }\n    </script>\n</head>\n<body class=\"antialiased\">\n<div class=\"relative flex justify-center items-center min-h-screen bg-gray-100 selection:bg-red-500 selection:text-white\">\n    <div class=\"w-full sm:w-3/4 xl:w-1/2 mx-auto p-6\">\n        <div class=\"px-6 py-4 bg-white from-gray-700/50 via-transparent rounded-lg shadow-2xl shadow-gray-500/20 flex items-center focus:outline focus:outline-2 focus:outline-red-500\">\n            <div class=\"relative flex h-3 w-3 group \">\n                <span class=\"animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 group-[.status-down]:bg-red-600 opacity-75\"></span>\n                <span class=\"relative inline-flex rounded-full h-3 w-3 bg-green-400 group-[.status-down]:bg-red-600\"></span>\n            </div>\n\n            <div class=\"ml-6\">\n                <h2 class=\"text-xl font-semibold text-gray-900\">Application up</h2>\n\n                <p class=\"mt-2 text-gray-500 dark:text-gray-400 text-sm leading-relaxed\">\n                    HTTP request received.\n\n                                            Response rendered in 1094ms.\n                                    </p>\n            </div>\n        </div>\n    </div>\n</div>\n</body>\n</html>\n"
       tags:
         - Endpoints
   /:
@@ -1740,6 +1748,14 @@ paths:
                   message:
                     type: string
                     example: ''
+      tags:
+        - Endpoints
+    put:
+      summary: ''
+      operationId: putStoragePath
+      description: ''
+      parameters: []
+      responses: {  }
       tags:
         - Endpoints
     parameters:
