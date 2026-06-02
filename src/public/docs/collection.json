@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel API Documentation",
-        "_postman_id": "fe326b61-4419-47e6-ab83-ac360335bf68",
+        "_postman_id": "7831a93a-5504-4ae9-9c9f-42ad38814abb",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -43,7 +43,10 @@
                             "mode": "raw",
                             "raw": "{\"email\":\"user@example.com\",\"password\":\"secret\"}"
                         },
-                        "description": ""
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
                     },
                     "response": [
                         {
@@ -78,7 +81,10 @@
                             "mode": "raw",
                             "raw": "{\"name\":\"John Doe\",\"email\":\"user@example.com\",\"password\":\"secret\",\"password_confirmation\":\"secret\",\"role\":\"user\"}"
                         },
-                        "description": ""
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
                     },
                     "response": [
                         {
@@ -1242,7 +1248,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6ImE4S2d1Vks0OEowbVQyRzJBQlFuanc9PSIsInZhbHVlIjoiWmcxUnZwdzV0K0g2WFpHbTN6UGIybGk3N2NyMWR2YmNQM2U4MjI0bHF0NWNqTzluZlVTSjRnZXp5UTU0UFZsSEJqdlVtL1JuYjJnZ1dGb0VodjdHcmhNRXVKTVFUaTJ5dnRrT3pOaGE0Y0p2WE5GcWpFNWFBVUhEMERPRHJ4TkUiLCJtYWMiOiI5ODMxMTgzODAyOTNmZDQxNDFjZWE0NTc5YjMwMTE1MzEyZWEyMzk5YTNhYzNiNjljZTQzMTZhZjNiZjFkMzY5IiwidGFnIjoiIn0%3D; expires=Wed, 13 May 2026 23:14:37 GMT; Max-Age=7200; path=\/; samesite=lax; laravel_session=eyJpdiI6Inh3cjRCM2Q3OHFSR3RvM2cxTkFjYXc9PSIsInZhbHVlIjoiR0E4KzNMZzdGem9COG5uQTFFbldCM253Tm9QSnJqNlNFZVo1RDhIQXVtZzNwRFVhSENWZUV5dFJZMG1SbVl1aVVkWkEzNWx6TnpWVmQyY0lkbTNOKzdRcU10R2dYWHdwUXhtUThJVkNGNWZFalJkcXNLMUk3MFBxVURUb0FJM1oiLCJtYWMiOiIyY2E0ZDhlM2Y0NjRmNDljMTEyNDk1NTU5NzYxODJlYTE3MjlkYjhlNTYyMTVkNDZlZDE4ODA2YmI4OWQxZWUxIiwidGFnIjoiIn0%3D; expires=Wed, 13 May 2026 23:14:37 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6ImZ3UXVIa2IwTTZueHZkL0lBZWVDTWc9PSIsInZhbHVlIjoia3pnSmxIWGhFUmxOQmhTMG5jVDFSdUJNa0VLeERwKzBUeGRJckt4dEFtbUZqTkxIK0JPWm9JKzNIWE4vQjFGMDFuNkFlYXlROE4rZFE4aGlDd1MwWVdRVERNaFhVMzc0bnB5MmcyTzdFQVpxdG1vQW9RUjVuMWdzbXgwL29VY3kiLCJtYWMiOiJlNWVlZDg1ZTc2ZGMxNGE3OGU5YmQ3ZDZlZjAyYTUyZjU3Y2EzMjAwZGZmZGEzZTg3Y2I1YTQ3MmJiOWIzYjhlIiwidGFnIjoiIn0%3D; expires=Mon, 25 May 2026 13:44:16 GMT; Max-Age=7200; path=\/; samesite=lax; laravel_session=eyJpdiI6ImF1U29BcTZib1hyVUtiYkVra0FCMVE9PSIsInZhbHVlIjoiRzY1V1RhS0VBYUtRK2dvUGlwS3ZkcjljdWxYSUs4b2oxWWpBYXBvMXZOaVZCTVJxcFFHcStHdlc5ams3aGJaU1NqdW51UUljby92U09VUEozbWdPZFc3MTlmTTI5cXZicnJZREtEY2RjS0IxUGxKa3VzYjBwUnJkNThpOFpreEUiLCJtYWMiOiIxYjJlMjRiZDg4ZmIxNDMyMTQzNDc4OWMyZmFkNDRiNDY3OWU0ZjE1ZTM3M2FmNzBlMDdiZDc5ZGJlYTE1ZGJiIiwidGFnIjoiIn0%3D; expires=Mon, 25 May 2026 13:44:16 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
                                 }
                             ],
                             "code": 204,
@@ -1287,7 +1293,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n    <title>Laravel<\/title>\n\n    <!-- Fonts -->\n    <link rel=\"preconnect\" href=\"https:\/\/fonts.bunny.net\">\n    <link href=\"https:\/\/fonts.bunny.net\/css?family=figtree:400,600&display=swap\" rel=\"stylesheet\" \/>\n\n    <!-- Styles -->\n    <script src=\"https:\/\/cdn.tailwindcss.com\"><\/script>\n\n    <script>\n        tailwind.config = {\n            theme: {\n                extend: {\n                    fontFamily: {\n                        sans: ['Figtree', 'ui-sans-serif', 'system-ui', 'sans-serif', \"Apple Color Emoji\", \"Segoe UI Emoji\"],\n                    }\n                }\n            }\n        }\n    <\/script>\n<\/head>\n<body class=\"antialiased\">\n<div class=\"relative flex justify-center items-center min-h-screen bg-gray-100 selection:bg-red-500 selection:text-white\">\n    <div class=\"w-full sm:w-3\/4 xl:w-1\/2 mx-auto p-6\">\n        <div class=\"px-6 py-4 bg-white from-gray-700\/50 via-transparent rounded-lg shadow-2xl shadow-gray-500\/20 flex items-center focus:outline focus:outline-2 focus:outline-red-500\">\n            <div class=\"relative flex h-3 w-3 group \">\n                <span class=\"animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 group-[.status-down]:bg-red-600 opacity-75\"><\/span>\n                <span class=\"relative inline-flex rounded-full h-3 w-3 bg-green-400 group-[.status-down]:bg-red-600\"><\/span>\n            <\/div>\n\n            <div class=\"ml-6\">\n                <h2 class=\"text-xl font-semibold text-gray-900\">Application up<\/h2>\n\n                <p class=\"mt-2 text-gray-500 dark:text-gray-400 text-sm leading-relaxed\">\n                    HTTP request received.\n\n                                            Response rendered in 1094ms.\n                                    <\/p>\n            <\/div>\n        <\/div>\n    <\/div>\n<\/div>\n<\/body>\n<\/html>\n",
+                            "body": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n    <title>Laravel<\/title>\n\n    <!-- Fonts -->\n    <link rel=\"preconnect\" href=\"https:\/\/fonts.bunny.net\">\n    <link href=\"https:\/\/fonts.bunny.net\/css?family=figtree:400,600&display=swap\" rel=\"stylesheet\" \/>\n\n    <!-- Styles -->\n    <script src=\"https:\/\/cdn.tailwindcss.com\"><\/script>\n\n    <script>\n        tailwind.config = {\n            theme: {\n                extend: {\n                    fontFamily: {\n                        sans: ['Figtree', 'ui-sans-serif', 'system-ui', 'sans-serif', \"Apple Color Emoji\", \"Segoe UI Emoji\"],\n                    }\n                }\n            }\n        }\n    <\/script>\n<\/head>\n<body class=\"antialiased\">\n<div class=\"relative flex justify-center items-center min-h-screen bg-gray-100 selection:bg-red-500 selection:text-white\">\n    <div class=\"w-full sm:w-3\/4 xl:w-1\/2 mx-auto p-6\">\n        <div class=\"px-6 py-4 bg-white from-gray-700\/50 via-transparent rounded-lg shadow-2xl shadow-gray-500\/20 flex items-center focus:outline focus:outline-2 focus:outline-red-500\">\n            <div class=\"relative flex h-3 w-3 group \">\n                <span class=\"animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 group-[.status-down]:bg-red-600 opacity-75\"><\/span>\n                <span class=\"relative inline-flex rounded-full h-3 w-3 bg-green-400 group-[.status-down]:bg-red-600\"><\/span>\n            <\/div>\n\n            <div class=\"ml-6\">\n                <h2 class=\"text-xl font-semibold text-gray-900\">Application up<\/h2>\n\n                <p class=\"mt-2 text-gray-500 dark:text-gray-400 text-sm leading-relaxed\">\n                    HTTP request received.\n\n                                            Response rendered in 830ms.\n                                    <\/p>\n            <\/div>\n        <\/div>\n    <\/div>\n<\/div>\n<\/body>\n<\/html>\n",
                             "name": ""
                         }
                     ]
@@ -1328,7 +1334,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6IkkzQXBnTkg1czdXYnJXMkszMFBWb2c9PSIsInZhbHVlIjoiRHZISStFK3k0SmxHaTkvMzRFTE1XRm1iUW5LUFNLSm1LQ3kvTVkzMVZVcS9nVitlLzlCSkpZeTJ5MXgrWjRhcmVSZXhmcm9rdENnTHBld2VyZVl2K0RjUzVqdFU0dmFERTBlek5TSTcwSVBubXNyZzM3SGcvTVZqU2hzODVvODYiLCJtYWMiOiJhYzNhZGZlZjdhY2I2NTJlZjc1NzQ1ZDYxOGU2ZjdhMGJhNjc3NWRkNTMxMWZkZjkyNjY5YzBjMGNlMGYxYzAwIiwidGFnIjoiIn0%3D; expires=Wed, 13 May 2026 23:14:38 GMT; Max-Age=7200; path=\/; samesite=lax; laravel_session=eyJpdiI6IjhUczBGMm5NaVExVVVYQzRYYktMMFE9PSIsInZhbHVlIjoienFCNU1ldEtOZGVGeVZjWDZqM2ZLRHdTRUg1YzRMQ3ZTRkZXdXU1U0RHMTdmUjd1R09LRllsdzFVZlVHSGNPeTVsRkw5V2x2OGFud01QVkRWWHNGa2lGQW1HRFNBVlNwellhRit5R1hMdWNVMm9QMkdUTmNuNTZnWlJZSzNoL2siLCJtYWMiOiI4ZWEwZWI4YTJhMzJlYmMzZjBhYTNiMzc5MzE1MDNlNDI5YmM3YTBmN2ZiMGNiNDBhNGM5MmFlNmFiYzg1MzZhIiwidGFnIjoiIn0%3D; expires=Wed, 13 May 2026 23:14:38 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6IlRBaDgrV1psNitWQUluc01rNEl1RlE9PSIsInZhbHVlIjoiYlVCTWtnYmRBdjkrcWJ5TzJmS2F3Z3NuTDczOVVDbmcxcDQ2UkczZGxiV0I4ZEdjbTJmRm9QWkhnK283Q3dqaStmNHB0S0Ezd3hEYmlyREdpZlVqbTNQR0lsdmlQZnJKMGE3UTF6b1VzR0JEWmc0UDk5TzlwbnFYUC9iVWFrM1ciLCJtYWMiOiJlNmMxZGVlNGM4YWVhY2Y1MWNhZTNhYTI4MzcyZDcxOTNjNzNiMDliZmNlZjA4ZmY3OThmM2VjMWY0YjExZGQ1IiwidGFnIjoiIn0%3D; expires=Mon, 25 May 2026 13:44:16 GMT; Max-Age=7200; path=\/; samesite=lax; laravel_session=eyJpdiI6IlVCUVNya0hHNGI1alVYSncrRE5MVlE9PSIsInZhbHVlIjoibG12dUFMMWJBY2toSXRpNk1GZzZ1UCtzeS9oeVc3cTVJamQvR2t6SXVXWjRUZUhldzVnMVJLMC92bmJmajgrNUJaTjc1em56eDlGQmhyRHVHdnJJSk5zNlNlbHlXSFlJK1FvczV0R3poWWVEVnY1bjA2Ly9xL3QvTCtqaGVJTzYiLCJtYWMiOiJhN2MyY2I2MzUyNmMxMzJjMTY5OWFhMDcwMTgyM2ViM2M2ZWM1MmRhMTZmODM3N2E0MTVkNWU3NjcwNjcwMjA5IiwidGFnIjoiIn0%3D; expires=Mon, 25 May 2026 13:44:16 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
                                 }
                             ],
                             "code": 200,

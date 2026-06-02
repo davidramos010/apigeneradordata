@@ -17,6 +17,7 @@ class AuthController extends Controller
     /**
      * Register a new user.
      *
+     * @unauthenticated
      * @bodyParam name string required The name of the user. Example: John Doe
      * @bodyParam email string required The email of the user. Example: user@example.com
      * @bodyParam password string required The password of the user. Example: secret
@@ -67,6 +68,7 @@ class AuthController extends Controller
     /**
      * Login a user.
      *
+     * @unauthenticated
      * @bodyParam email string required The email of the user. Example: user@example.com
      * @bodyParam password string required The password of the user. Example: secret
      *
