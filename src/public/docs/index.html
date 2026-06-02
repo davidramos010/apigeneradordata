@@ -198,7 +198,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: May 13, 2026</li>
+        <li>Last updated: May 25, 2026</li>
     </ul>
 </div>
 
@@ -226,7 +226,6 @@ You can switch the language used with the tabs at the top right (or from the nav
                                 <h2 id="1-authentication-POSTapi-login">Login a user.</h2>
 
 <p>
-<small class="badge badge-darkred">requires authentication</small>
 </p>
 
 
@@ -238,7 +237,6 @@ You can switch the language used with the tabs at the top right (or from the nav
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "http://localhost:8001/api/login" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -254,7 +252,6 @@ You can switch the language used with the tabs at the top right (or from the nav
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -300,7 +297,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </span>
 <form id="form-POSTapi-login" data-method="POST"
       data-path="api/login"
-      data-authed="1"
+      data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
@@ -330,18 +327,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <b><code>api/login</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-login"
-               value="Bearer {YOUR_AUTH_KEY}"
-               data-component="header">
-    <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
-            </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
 &nbsp;
@@ -396,7 +381,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <h2 id="1-authentication-POSTapi-register">Register a new user.</h2>
 
 <p>
-<small class="badge badge-darkred">requires authentication</small>
 </p>
 
 
@@ -408,7 +392,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "http://localhost:8001/api/register" \
-    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -427,7 +410,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -489,7 +471,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 </span>
 <form id="form-POSTapi-register" data-method="POST"
       data-path="api/register"
-      data-authed="1"
+      data-authed="0"
       data-hasfiles="0"
       data-isarraybody="0"
       autocomplete="off"
@@ -519,18 +501,6 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <b><code>api/register</code></b>
         </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                                <div style="padding-left: 28px; clear: unset;">
-                <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
-&nbsp;
- &nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="Authorization" class="auth-value"               data-endpoint="POSTapi-register"
-               value="Bearer {YOUR_AUTH_KEY}"
-               data-component="header">
-    <br>
-<p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
-            </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
 &nbsp;
@@ -4474,7 +4444,7 @@ fetch(url, {
             </summary>
             <pre><code class="language-http">cache-control: no-cache, private
 access-control-allow-origin: *
-set-cookie: XSRF-TOKEN=eyJpdiI6ImE4S2d1Vks0OEowbVQyRzJBQlFuanc9PSIsInZhbHVlIjoiWmcxUnZwdzV0K0g2WFpHbTN6UGIybGk3N2NyMWR2YmNQM2U4MjI0bHF0NWNqTzluZlVTSjRnZXp5UTU0UFZsSEJqdlVtL1JuYjJnZ1dGb0VodjdHcmhNRXVKTVFUaTJ5dnRrT3pOaGE0Y0p2WE5GcWpFNWFBVUhEMERPRHJ4TkUiLCJtYWMiOiI5ODMxMTgzODAyOTNmZDQxNDFjZWE0NTc5YjMwMTE1MzEyZWEyMzk5YTNhYzNiNjljZTQzMTZhZjNiZjFkMzY5IiwidGFnIjoiIn0%3D; expires=Wed, 13 May 2026 23:14:37 GMT; Max-Age=7200; path=/; samesite=lax; laravel_session=eyJpdiI6Inh3cjRCM2Q3OHFSR3RvM2cxTkFjYXc9PSIsInZhbHVlIjoiR0E4KzNMZzdGem9COG5uQTFFbldCM253Tm9QSnJqNlNFZVo1RDhIQXVtZzNwRFVhSENWZUV5dFJZMG1SbVl1aVVkWkEzNWx6TnpWVmQyY0lkbTNOKzdRcU10R2dYWHdwUXhtUThJVkNGNWZFalJkcXNLMUk3MFBxVURUb0FJM1oiLCJtYWMiOiIyY2E0ZDhlM2Y0NjRmNDljMTEyNDk1NTU5NzYxODJlYTE3MjlkYjhlNTYyMTVkNDZlZDE4ODA2YmI4OWQxZWUxIiwidGFnIjoiIn0%3D; expires=Wed, 13 May 2026 23:14:37 GMT; Max-Age=7200; path=/; httponly; samesite=lax
+set-cookie: XSRF-TOKEN=eyJpdiI6ImZ3UXVIa2IwTTZueHZkL0lBZWVDTWc9PSIsInZhbHVlIjoia3pnSmxIWGhFUmxOQmhTMG5jVDFSdUJNa0VLeERwKzBUeGRJckt4dEFtbUZqTkxIK0JPWm9JKzNIWE4vQjFGMDFuNkFlYXlROE4rZFE4aGlDd1MwWVdRVERNaFhVMzc0bnB5MmcyTzdFQVpxdG1vQW9RUjVuMWdzbXgwL29VY3kiLCJtYWMiOiJlNWVlZDg1ZTc2ZGMxNGE3OGU5YmQ3ZDZlZjAyYTUyZjU3Y2EzMjAwZGZmZGEzZTg3Y2I1YTQ3MmJiOWIzYjhlIiwidGFnIjoiIn0%3D; expires=Mon, 25 May 2026 13:44:16 GMT; Max-Age=7200; path=/; samesite=lax; laravel_session=eyJpdiI6ImF1U29BcTZib1hyVUtiYkVra0FCMVE9PSIsInZhbHVlIjoiRzY1V1RhS0VBYUtRK2dvUGlwS3ZkcjljdWxYSUs4b2oxWWpBYXBvMXZOaVZCTVJxcFFHcStHdlc5ams3aGJaU1NqdW51UUljby92U09VUEozbWdPZFc3MTlmTTI5cXZicnJZREtEY2RjS0IxUGxKa3VzYjBwUnJkNThpOFpreEUiLCJtYWMiOiIxYjJlMjRiZDg4ZmIxNDMyMTQzNDc4OWMyZmFkNDRiNDY3OWU0ZjE1ZTM3M2FmNzBlMDdiZDc5ZGJlYTE1ZGJiIiwidGFnIjoiIn0%3D; expires=Mon, 25 May 2026 13:44:16 GMT; Max-Age=7200; path=/; httponly; samesite=lax
  </code></pre></details>         <pre>
 <code>Empty response</code>
  </pre>
@@ -4657,7 +4627,7 @@ content-type: application/json
                 &lt;p class=&quot;mt-2 text-gray-500 dark:text-gray-400 text-sm leading-relaxed&quot;&gt;
                     HTTP request received.
 
-                                            Response rendered in 1094ms.
+                                            Response rendered in 830ms.
                                     &lt;/p&gt;
             &lt;/div&gt;
         &lt;/div&gt;
@@ -4802,7 +4772,7 @@ fetch(url, {
             </summary>
             <pre><code class="language-http">content-type: text/html; charset=utf-8
 cache-control: no-cache, private
-set-cookie: XSRF-TOKEN=eyJpdiI6IkkzQXBnTkg1czdXYnJXMkszMFBWb2c9PSIsInZhbHVlIjoiRHZISStFK3k0SmxHaTkvMzRFTE1XRm1iUW5LUFNLSm1LQ3kvTVkzMVZVcS9nVitlLzlCSkpZeTJ5MXgrWjRhcmVSZXhmcm9rdENnTHBld2VyZVl2K0RjUzVqdFU0dmFERTBlek5TSTcwSVBubXNyZzM3SGcvTVZqU2hzODVvODYiLCJtYWMiOiJhYzNhZGZlZjdhY2I2NTJlZjc1NzQ1ZDYxOGU2ZjdhMGJhNjc3NWRkNTMxMWZkZjkyNjY5YzBjMGNlMGYxYzAwIiwidGFnIjoiIn0%3D; expires=Wed, 13 May 2026 23:14:38 GMT; Max-Age=7200; path=/; samesite=lax; laravel_session=eyJpdiI6IjhUczBGMm5NaVExVVVYQzRYYktMMFE9PSIsInZhbHVlIjoienFCNU1ldEtOZGVGeVZjWDZqM2ZLRHdTRUg1YzRMQ3ZTRkZXdXU1U0RHMTdmUjd1R09LRllsdzFVZlVHSGNPeTVsRkw5V2x2OGFud01QVkRWWHNGa2lGQW1HRFNBVlNwellhRit5R1hMdWNVMm9QMkdUTmNuNTZnWlJZSzNoL2siLCJtYWMiOiI4ZWEwZWI4YTJhMzJlYmMzZjBhYTNiMzc5MzE1MDNlNDI5YmM3YTBmN2ZiMGNiNDBhNGM5MmFlNmFiYzg1MzZhIiwidGFnIjoiIn0%3D; expires=Wed, 13 May 2026 23:14:38 GMT; Max-Age=7200; path=/; httponly; samesite=lax
+set-cookie: XSRF-TOKEN=eyJpdiI6IlRBaDgrV1psNitWQUluc01rNEl1RlE9PSIsInZhbHVlIjoiYlVCTWtnYmRBdjkrcWJ5TzJmS2F3Z3NuTDczOVVDbmcxcDQ2UkczZGxiV0I4ZEdjbTJmRm9QWkhnK283Q3dqaStmNHB0S0Ezd3hEYmlyREdpZlVqbTNQR0lsdmlQZnJKMGE3UTF6b1VzR0JEWmc0UDk5TzlwbnFYUC9iVWFrM1ciLCJtYWMiOiJlNmMxZGVlNGM4YWVhY2Y1MWNhZTNhYTI4MzcyZDcxOTNjNzNiMDliZmNlZjA4ZmY3OThmM2VjMWY0YjExZGQ1IiwidGFnIjoiIn0%3D; expires=Mon, 25 May 2026 13:44:16 GMT; Max-Age=7200; path=/; samesite=lax; laravel_session=eyJpdiI6IlVCUVNya0hHNGI1alVYSncrRE5MVlE9PSIsInZhbHVlIjoibG12dUFMMWJBY2toSXRpNk1GZzZ1UCtzeS9oeVc3cTVJamQvR2t6SXVXWjRUZUhldzVnMVJLMC92bmJmajgrNUJaTjc1em56eDlGQmhyRHVHdnJJSk5zNlNlbHlXSFlJK1FvczV0R3poWWVEVnY1bjA2Ly9xL3QvTCtqaGVJTzYiLCJtYWMiOiJhN2MyY2I2MzUyNmMxMzJjMTY5OWFhMDcwMTgyM2ViM2M2ZWM1MmRhMTZmODM3N2E0MTVkNWU3NjcwNjcwMjA5IiwidGFnIjoiIn0%3D; expires=Mon, 25 May 2026 13:44:16 GMT; Max-Age=7200; path=/; httponly; samesite=lax
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">&lt;!DOCTYPE html&gt;

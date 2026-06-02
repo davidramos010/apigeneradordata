@@ -26,5 +26,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
             'role' => 'admin',
         ]);
+
+        User::factory()->create([
+            'name' => 'Api User',
+            'email' => 'apiservice@generardordata.com',
+            'role' => 'user',
+            'password' => '4piS3rv1c3P4ssw0rd.',
+        ]);
     }
 }
