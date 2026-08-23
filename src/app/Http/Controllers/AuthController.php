@@ -22,7 +22,6 @@ class AuthController extends Controller
      * @bodyParam email string required The email of the user. Example: user@example.com
      * @bodyParam password string required The password of the user. Example: secret
      * @bodyParam password_confirmation string required The password confirmation. Example: secret
-     * @bodyParam role string required The role of the user. Example: user
      * @response 200 {
      *   "message": "User registered successfully"
      * }
@@ -41,7 +40,6 @@ class AuthController extends Controller
             // Validate the incoming request data
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|min:10|max:100',
-                'role' => 'required|string|in:admin,user',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:8|confirmed',
             ]);
@@ -53,7 +51,7 @@ class AuthController extends Controller
             // Create a new user instance
             User::create([
                 'name' => $request->input('name'),
-                'role' => $request->input('role'),
+                'role' => 'user',
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')),
             ]);
