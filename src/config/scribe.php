@@ -3,6 +3,7 @@
 use Knuckles\Scribe\Config\AuthIn;
 
 return [
+    'title' => 'GeneradorData API Documentation',
     'type' => 'static',
     'static' => [
         'output_path' => 'public/docs',
@@ -22,7 +23,7 @@ return [
                 'prefixes' => ['api/*'],
                 'domains' => ['*'],
             ],
-            'include' => ['*'],
+            'include' => [],
             'exclude' => [],
             'apply' => [
                 'headers' => [
