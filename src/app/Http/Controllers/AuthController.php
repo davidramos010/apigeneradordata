@@ -27,12 +27,18 @@ class AuthController extends Controller
      * }
      * @response 422 {
      *   "message": "Validation error",
-     *   "errors": {            
+     *   "errors": {
      *    "email": [
      *     "The email has already been taken."
      *   ]
      * }     * }
-     * 
+     * @response 429 {
+     *   "message": "Daily registration limit exceeded for this IP address.",
+     *   "limit": 1000,
+     *   "used": 1000,
+     *   "resets_at": "2026-08-25T00:00:00+00:00"
+     * }
+     *
      */
     public function register(Request $request)
     {
@@ -72,6 +78,12 @@ class AuthController extends Controller
      *
      * @response 200 {
      *   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+     * }
+     * @response 429 {
+     *   "message": "Daily API request limit exceeded.",
+     *   "limit": 1000,
+     *   "used": 1000,
+     *   "resets_at": "2026-08-25T00:00:00+00:00"
      * }
      */
     public function login(Request $request)
