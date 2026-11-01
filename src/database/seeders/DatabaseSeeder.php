@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\UserRateLimitOverride;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -32,6 +33,32 @@ class DatabaseSeeder extends Seeder
             'email' => 'apiservice@generardordata.com',
             'role' => 'user',
             'password' => '4piS3rv1c3P4ssw0rd.',
+        ]);
+
+        $boostedUser = User::factory()->create([
+            'name' => 'Boosted Quota User',
+            'email' => 'boosted@example.com',
+            'role' => 'user',
+        ]);
+
+        UserRateLimitOverride::create([
+            'user_id' => $boostedUser->id,
+            'daily_limit' => 5000,
+            'unlimited' => false,
+            'notes' => 'Seeded example of a custom daily limit override',
+        ]);
+
+        $unlimitedUser = User::factory()->create([
+            'name' => 'Unlimited Quota User',
+            'email' => 'unlimited@example.com',
+            'role' => 'user',
+        ]);
+
+        UserRateLimitOverride::create([
+            'user_id' => $unlimitedUser->id,
+            'daily_limit' => null,
+            'unlimited' => true,
+            'notes' => 'Seeded example of an unlimited override',
         ]);
     }
 }

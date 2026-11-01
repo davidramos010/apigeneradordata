@@ -33,6 +33,12 @@ class GenerateDocumentController extends Controller
      * @response 500 {
      *   "message": "Internal Server Error"
      * }
+     * @response 429 {
+     *   "message": "Daily API request limit exceeded.",
+     *   "limit": 1000,
+     *   "used": 1000,
+     *   "resets_at": "2026-08-25T00:00:00+00:00"
+     * }
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse

@@ -12,11 +12,13 @@ use App\Http\Controllers\GenerateCupsController;
 
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsUserAuth;
+use App\Http\Middleware\EnforceUserDailyLimit;
+use App\Http\Middleware\EnforceIpDailyLimit;
 
 
 // PUBLIC ROUTES
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login'])->middleware([EnforceUserDailyLimit::class]);
+Route::post('register', [AuthController::class, 'register'])->middleware([EnforceIpDailyLimit::class]);
 
 /**
  * |--------------------------------------------------------------------------
@@ -27,10 +29,11 @@ Route::post('register', [AuthController::class, 'register']);
  * | The AuthController handles user-related actions such as retrieving user information and logging out.
  * | The ProductController allows authenticated users to view the list of products.
  * | The GenerateDocumentController provides endpoints for generating various types of documents (DNI, CIF, NIE, NIF, SSN) for authenticated users.
+ * | EnforceUserDailyLimit applies each user's daily request quota (1000/day by default for role 'user', unlimited for 'admin', with per-user overrides).
  * |--------------------------------------------------------------------------
  * @authenticated
  */
-Route::middleware([IsUserAuth::class])->group(function () {
+Route::middleware([IsUserAuth::class, EnforceUserDailyLimit::class])->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::get('me', 'user', 'getUser');
         Route::post('logout', 'logout');
@@ -64,10 +67,11 @@ Route::middleware([IsUserAuth::class])->group(function () {
  * | These routes are protected by the IsAdmin middleware, which checks if the
  * | authenticated user has admin privileges. Only users with the 'admin' role can access these routes.
  * | The ProductController handles CRUD operations for products, allowing admins to manage the product catalog.
+ * | EnforceUserDailyLimit is also applied here for consistency, but admins are always unlimited (no-op for them).
  * |--------------------------------------------------------------------------
  * @authenticated
  */
-Route::middleware([IsAdmin::class])->group(function () {
+Route::middleware([IsAdmin::class, EnforceUserDailyLimit::class])->group(function () {
     Route::controller(ProductController::class)->group(function () {
         Route::get('products', 'getProducts');
         Route::post('product', 'addProduct');
